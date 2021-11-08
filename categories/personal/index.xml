@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>personal on James Hemmings ~ Blog</title>
+    <link>https://jamesit.github.io/categories/personal/</link>
+    <description>Recent content in personal on James Hemmings ~ Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+    <lastBuildDate>Thu, 15 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/categories/personal/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PGP Transition Statement</title>
+      <link>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</link>
+      <pubDate>Thu, 15 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</guid>
+      <description>-&amp;mdash;-BEGIN PGP SIGNED MESSAGE&amp;mdash;&amp;ndash; Hash: SHA256
+OpenPGP Key Transition Statement for James Hemmings / james@hemmings.pw
+I have created a new OpenPGP key and will be transitioning away from my old key. The old key has not been compromised and will continue to be valid for a short period of time, but I prefer all future correspondence to be encrypted to the new key, and will be making signatures with the new key going forward.</description>
+    </item>
+    
+    <item>
+      <title>US Year Abroad Trip</title>
+      <link>https://jamesit.github.io/2016/07/28/us-year-abroad-trip/</link>
+      <pubDate>Thu, 28 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2016/07/28/us-year-abroad-trip/</guid>
+      <description>Just thought I&amp;rsquo;d make a post regarding what I&amp;rsquo;ve been up to this year. I have been in the United States Of America since July 2015 for a study abroad program which I was very lucky to be accepted onto, and have been making the most of this opportunity since I got here. I completed two Semesters at the Pennsylvania College Of Technology and have also been working as an EMT for the college responding to 911 emergencies and volunteering with the fire department.</description>
+    </item>
+    
+  </channel>
+</rss>

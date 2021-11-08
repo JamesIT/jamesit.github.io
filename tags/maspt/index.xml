@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>maspt on James Hemmings ~ Blog</title>
+    <link>https://jamesit.github.io/tags/maspt/</link>
+    <description>Recent content in maspt on James Hemmings ~ Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+    <lastBuildDate>Sun, 16 Oct 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/maspt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MASPTv2 - Mobile Application Security and Penetration Testing Course</title>
+      <link>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</link>
+      <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</guid>
+      <description>So about three weeks ago I won an &amp;ldquo;Elite&amp;rdquo; edition of the new mobile penetration testing course from eLearnSecurity by watching their webinar and being randomly selected. I&amp;rsquo;m really excited about this course and have been getting started now that it&amp;rsquo;s been released. I really did not expect to win either!
+This really helps being on a student budget, and will be relevant to the mobile development module at Abertay University next semester, I&amp;rsquo;ll be posting a review once I finish and pass the course.</description>
+    </item>
+    
+  </channel>
+</rss>

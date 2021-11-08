@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jsonp on James Hemmings ~ Blog</title>
+    <link>https://jamesit.github.io/tags/jsonp/</link>
+    <description>Recent content in jsonp on James Hemmings ~ Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+    <lastBuildDate>Thu, 24 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/jsonp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EE 4GEE Mobile WiFi Router - Multiple Security Vulnerabilities Writeup</title>
+      <link>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</link>
+      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</guid>
+      <description>After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.
+Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</description>
+    </item>
+    
+  </channel>
+</rss>

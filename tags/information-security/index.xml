@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>information-security on James Hemmings ~ Blog</title>
+    <link>https://jamesit.github.io/tags/information-security/</link>
+    <description>Recent content in information-security on James Hemmings ~ Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+    <lastBuildDate>Sun, 16 Oct 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/information-security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SHU CTF - Cyber Security Challenge</title>
+      <link>https://jamesit.github.io/2016/10/16/shu-ctf-cyber-security-challenge/</link>
+      <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2016/10/16/shu-ctf-cyber-security-challenge/</guid>
+      <description>Yesterday I participated in a capture the flag event at Sheffield Hallam University organised by Cyber Security Challenge UK, it was a really interesting experience for my first in person CTF and I took away some points and advice for future CTF&amp;rsquo;s and things I need to look at and research. I arrived at around 9:30am and got myself signed in and then had some pre-game coffee (Very important before the CTF!</description>
+    </item>
+    
+  </channel>
+</rss>

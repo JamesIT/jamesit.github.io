@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>reflected-xss on James Hemmings ~ Blog</title>
+    <link>https://jamesit.github.io/tags/reflected-xss/</link>
+    <description>Recent content in reflected-xss on James Hemmings ~ Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+    <lastBuildDate>Sat, 15 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/reflected-xss/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Major League Baseball Reflected XSS</title>
+      <link>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</link>
+      <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</guid>
+      <description>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
+In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!</description>
+    </item>
+    
+  </channel>
+</rss>

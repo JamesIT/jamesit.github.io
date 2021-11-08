@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>James Hemmings ~ Blog</title>
+    <link>https://jamesit.github.io/</link>
+    <description>Recent content on James Hemmings ~ Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EE 4GEE HH70 Router Vulnerability Disclosure</title>
+      <link>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</guid>
+      <description>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&amp;rsquo;s money and it seems like last time, it&amp;rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.
+This would enable any user on the LAN to gain access to the router using these hard-coded credentials.</description>
+    </item>
+    
+    <item>
+      <title>EE 4GEE Mobile WiFi Router - Multiple Security Vulnerabilities Writeup</title>
+      <link>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</link>
+      <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</guid>
+      <description>After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.
+Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</description>
+    </item>
+    
+    <item>
+      <title>Azure Cloud Root Keys (Insecure Storage) - Responsible Disclosure</title>
+      <link>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</link>
+      <pubDate>Sun, 23 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</guid>
+      <description>Back in February I found an Android application which is used by the emergency services, that had exposed Azure API keys within the application leading to potential compromise of sensitive incident reports, attachments, and infrastructure server &amp;ldquo;.vhd&amp;rdquo; files with the access level to spin up new instances or delete them. I immediately reported this to the application developer and it&amp;rsquo;s respective organisation under responsible disclosure, which resulted in an instant and prompt response, which I give huge kudos for.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://jamesit.github.io/contact/</link>
+      <pubDate>Wed, 19 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/contact/</guid>
+      <description>If you need to get in touch, you can contact me on any of the methods below. I am most active on Twitter.
+Email: james[.at.]hemmings.io
+Twitter: @MrJamesHemmings
+PGP Key:
+To be confirmed.</description>
+    </item>
+    
+    <item>
+      <title>GoodSAM App - CSRF/Stored XSS Chain Full Disclosure</title>
+      <link>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</link>
+      <pubDate>Mon, 17 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</guid>
+      <description>I&amp;rsquo;ve been a user of the mobile/web application named &amp;ldquo;GoodSAM App&amp;rdquo; which is an application where the Ambulance service in London or the East Midlands can dispatch &amp;ldquo;Responders&amp;rdquo; who are trained in Basic Life Support (BLS) and can be dispatched to cardiac arrests or other priority calls and users at emergencies can also request a &amp;ldquo;Responder&amp;rdquo;. Now this application is absolutely brilliant in the nature of what it does and I fully support them.</description>
+    </item>
+    
+    <item>
+      <title>Major League Baseball Reflected XSS</title>
+      <link>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</link>
+      <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</guid>
+      <description>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
+In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!</description>
+    </item>
+    
+    <item>
+      <title>Kioptrix 1.1 (Level 2) Writeup</title>
+      <link>https://jamesit.github.io/2017/02/11/kioptrix-1.1-level-2-writeup/</link>
+      <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/02/11/kioptrix-1.1-level-2-writeup/</guid>
+      <description>I&amp;rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
+The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql</description>
+    </item>
+    
+    <item>
+      <title>PWK &amp; OSCP Review - I Tried Harder</title>
+      <link>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</guid>
+      <description>Over the Christmas break from university, I decided that I&amp;rsquo;d take the PWK (OSCP) course which gave me something to do over the Christmas break and ensured I had plenty of time to complete the course. Having previously done other cyber security courses such as Comp Tia Security+ and eLearnSecurity&amp;rsquo;s PTPV4 course, I liked the fact that the PWK course was heavily practical in nature and had an extensive virtual lab to test penetration testing techniques on a variety of systems.</description>
+    </item>
+    
+    <item>
+      <title>SIGINT CTF 2017 Writeup</title>
+      <link>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</link>
+      <pubDate>Sun, 22 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</guid>
+      <description>The other week me and a team from Abertay University went to Edinburgh for a CTF hosted by SIGINT. The CTF was a jeopardy style CTF with various categories of challenges such as Binary Exploitation, Reverse Engineering, Web Challenges and more. Unfortunately as there was a team limit of four, I was unable to join the team from my university and was placed with another team.
+I decided I&amp;rsquo;d post a blog post on some of the challenges I undertook, and how I solved them.</description>
+    </item>
+    
+    <item>
+      <title>MASPTv2 - Mobile Application Security and Penetration Testing Course</title>
+      <link>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</link>
+      <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</guid>
+      <description>So about three weeks ago I won an &amp;ldquo;Elite&amp;rdquo; edition of the new mobile penetration testing course from eLearnSecurity by watching their webinar and being randomly selected. I&amp;rsquo;m really excited about this course and have been getting started now that it&amp;rsquo;s been released. I really did not expect to win either!
+This really helps being on a student budget, and will be relevant to the mobile development module at Abertay University next semester, I&amp;rsquo;ll be posting a review once I finish and pass the course.</description>
+    </item>
+    
+  </channel>
+</rss>
