@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>goodsam on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/tags/goodsam/</link>
+    <link>https://blog.jameshemmings.co.uk/tags/goodsam/</link>
     <description>Recent content in goodsam on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Mon, 17 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/goodsam/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/tags/goodsam/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GoodSAM App - CSRF/Stored XSS Chain Full Disclosure</title>
-      <link>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</link>
+      <link>https://blog.jameshemmings.co.uk/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</link>
       <pubDate>Mon, 17 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</guid>
+      <guid>https://blog.jameshemmings.co.uk/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</guid>
       <description>I&amp;rsquo;ve been a user of the mobile/web application named &amp;ldquo;GoodSAM App&amp;rdquo; which is an application where the Ambulance service in London or the East Midlands can dispatch &amp;ldquo;Responders&amp;rdquo; who are trained in Basic Life Support (BLS) and can be dispatched to cardiac arrests or other priority calls and users at emergencies can also request a &amp;ldquo;Responder&amp;rdquo;. Now this application is absolutely brilliant in the nature of what it does and I fully support them.</description>
     </item>
     

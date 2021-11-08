@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>pgp on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/tags/pgp/</link>
+    <link>https://blog.jameshemmings.co.uk/tags/pgp/</link>
     <description>Recent content in pgp on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Thu, 15 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/pgp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/tags/pgp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PGP Transition Statement</title>
-      <link>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</link>
+      <link>https://blog.jameshemmings.co.uk/2016/09/15/pgp-transition-statement/</link>
       <pubDate>Thu, 15 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</guid>
+      <guid>https://blog.jameshemmings.co.uk/2016/09/15/pgp-transition-statement/</guid>
       <description>-&amp;mdash;-BEGIN PGP SIGNED MESSAGE&amp;mdash;&amp;ndash; Hash: SHA256
 OpenPGP Key Transition Statement for James Hemmings / james@hemmings.pw
 I have created a new OpenPGP key and will be transitioning away from my old key. The old key has not been compromised and will continue to be valid for a short period of time, but I prefer all future correspondence to be encrypted to the new key, and will be making signatures with the new key going forward.</description>

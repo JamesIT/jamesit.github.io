@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>cwe-798 on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/tags/cwe-798/</link>
+    <link>https://blog.jameshemmings.co.uk/tags/cwe-798/</link>
     <description>Recent content in cwe-798 on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/cwe-798/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/tags/cwe-798/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EE 4GEE HH70 Router Vulnerability Disclosure</title>
-      <link>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</link>
+      <link>https://blog.jameshemmings.co.uk/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</link>
       <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</guid>
+      <guid>https://blog.jameshemmings.co.uk/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</guid>
       <description>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&amp;rsquo;s money and it seems like last time, it&amp;rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.
 This would enable any user on the LAN to gain access to the router using these hard-coded credentials.</description>
     </item>

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>mobile-hacking on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/tags/mobile-hacking/</link>
+    <link>https://blog.jameshemmings.co.uk/tags/mobile-hacking/</link>
     <description>Recent content in mobile-hacking on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 23 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/mobile-hacking/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/tags/mobile-hacking/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Azure Cloud Root Keys (Insecure Storage) - Responsible Disclosure</title>
-      <link>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</link>
+      <link>https://blog.jameshemmings.co.uk/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</link>
       <pubDate>Sun, 23 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</guid>
+      <guid>https://blog.jameshemmings.co.uk/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</guid>
       <description>Back in February I found an Android application which is used by the emergency services, that had exposed Azure API keys within the application leading to potential compromise of sensitive incident reports, attachments, and infrastructure server &amp;ldquo;.vhd&amp;rdquo; files with the access level to spin up new instances or delete them. I immediately reported this to the application developer and it&amp;rsquo;s respective organisation under responsible disclosure, which resulted in an instant and prompt response, which I give huge kudos for.</description>
     </item>
     

@@ -1,20 +1,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on James Hemmings ~ Blog</title>
-        <link>https://jamesit.github.io/posts/</link>
+        <link>https://blog.jameshemmings.co.uk/posts/</link>
         <description>Recent content in Posts on James Hemmings ~ Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
         <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
-        <atom:link href="https://jamesit.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://blog.jameshemmings.co.uk/posts/index.xml" rel="self" type="application/rss+xml" />
         
         <item>
             <title>EE 4GEE HH70 Router Vulnerability Disclosure</title>
-            <link>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</link>
+            <link>https://blog.jameshemmings.co.uk/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</link>
             <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2018/10/24/ee-4gee-hh70-router-vulnerability-disclosure/</guid>
             <description>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&amp;rsquo;s money and it seems like last time, it&amp;rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.
 This would enable any user on the LAN to gain access to the router using these hard-coded credentials.</description>
             <content type="html"><![CDATA[<p>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&rsquo;s money and it seems like last time, it&rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.</p>
@@ -46,10 +46,10 @@ sshpass -p oelinux123 scp %s <a href="mailto:root@192.168.225.1:%25s">root@192.1
         
         <item>
             <title>EE 4GEE Mobile WiFi Router - Multiple Security Vulnerabilities Writeup</title>
-            <link>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</link>
             <pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/08/24/ee-4gee-mobile-wifi-router-multiple-security-vulnerabilities-writeup/</guid>
             <description>After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.
 Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</description>
             <content type="html"><![CDATA[<p>After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.</p>
@@ -152,10 +152,10 @@ Other attacks are also possible by misleading and/or tricking users into executi
         
         <item>
             <title>Azure Cloud Root Keys (Insecure Storage) - Responsible Disclosure</title>
-            <link>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</link>
             <pubDate>Sun, 23 Jul 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/07/23/azure-cloud-root-keys-insecure-storage-responsible-disclosure/</guid>
             <description>Back in February I found an Android application which is used by the emergency services, that had exposed Azure API keys within the application leading to potential compromise of sensitive incident reports, attachments, and infrastructure server &amp;ldquo;.vhd&amp;rdquo; files with the access level to spin up new instances or delete them. I immediately reported this to the application developer and it&amp;rsquo;s respective organisation under responsible disclosure, which resulted in an instant and prompt response, which I give huge kudos for.</description>
             <content type="html"><![CDATA[<p>Back in February I found an Android application which is used by the emergency services, that had exposed Azure API keys within the application leading to potential compromise of sensitive incident reports, attachments, and infrastructure server &ldquo;.vhd&rdquo; files with the access level to spin up new instances or delete them. I immediately reported this to the application developer and it&rsquo;s respective organisation under responsible disclosure, which resulted in an instant and prompt response, which I give huge kudos for.</p>
 <p>OWASP Defines this class of vulnerability as &ldquo;Insecure Data Storage&rdquo;:</p>
@@ -186,10 +186,10 @@ Other attacks are also possible by misleading and/or tricking users into executi
         
         <item>
             <title>GoodSAM App - CSRF/Stored XSS Chain Full Disclosure</title>
-            <link>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</link>
             <pubDate>Mon, 17 Jul 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/07/17/goodsam-app-csrf/stored-xss-chain-full-disclosure/</guid>
             <description>I&amp;rsquo;ve been a user of the mobile/web application named &amp;ldquo;GoodSAM App&amp;rdquo; which is an application where the Ambulance service in London or the East Midlands can dispatch &amp;ldquo;Responders&amp;rdquo; who are trained in Basic Life Support (BLS) and can be dispatched to cardiac arrests or other priority calls and users at emergencies can also request a &amp;ldquo;Responder&amp;rdquo;. Now this application is absolutely brilliant in the nature of what it does and I fully support them.</description>
             <content type="html"><![CDATA[<p>I&rsquo;ve been a user of the mobile/web application named &ldquo;GoodSAM App&rdquo; which is an application where the Ambulance service in London or the East Midlands can dispatch &ldquo;Responders&rdquo; who are trained in Basic Life Support (BLS) and can be dispatched to cardiac arrests or other priority calls and users at emergencies can also request a &ldquo;Responder&rdquo;.  Now this application is absolutely brilliant in the nature of what it does and I fully support them.</p>
 <p>Despite this however, I did find two vulnerabilities within the application that may have been overlooked. Specifically Cross Site Request Forgery (CSRF) within the &ldquo;Account Profile&rdquo; page, along with Cross Site Scripting (XSS) within the same page, the account profile page being loaded upon login.</p>
@@ -253,10 +253,10 @@ Other attacks are also possible by misleading and/or tricking users into executi
         
         <item>
             <title>Major League Baseball Reflected XSS</title>
-            <link>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/07/15/major-league-baseball-reflected-xss/</link>
             <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/07/15/major-league-baseball-reflected-xss/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/07/15/major-league-baseball-reflected-xss/</guid>
             <description>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
 In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!</description>
             <content type="html"><![CDATA[<p>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.</p>
@@ -276,10 +276,10 @@ In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rd
         
         <item>
             <title>Kioptrix 1.1 (Level 2) Writeup</title>
-            <link>https://jamesit.github.io/2017/02/11/kioptrix-1.1-level-2-writeup/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/02/11/kioptrix-1.1-level-2-writeup/</link>
             <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/02/11/kioptrix-1.1-level-2-writeup/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/02/11/kioptrix-1.1-level-2-writeup/</guid>
             <description>I&amp;rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
 nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql</description>
@@ -312,10 +312,10 @@ nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00
         
         <item>
             <title>PWK &amp; OSCP Review - I Tried Harder</title>
-            <link>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/02/02/pwk-oscp-review-i-tried-harder/</link>
             <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/02/02/pwk-oscp-review-i-tried-harder/</guid>
             <description>Over the Christmas break from university, I decided that I&amp;rsquo;d take the PWK (OSCP) course which gave me something to do over the Christmas break and ensured I had plenty of time to complete the course. Having previously done other cyber security courses such as Comp Tia Security+ and eLearnSecurity&amp;rsquo;s PTPV4 course, I liked the fact that the PWK course was heavily practical in nature and had an extensive virtual lab to test penetration testing techniques on a variety of systems.</description>
             <content type="html"><![CDATA[<p>Over the Christmas break from university, I decided that I&rsquo;d take the PWK (OSCP) course which gave me something to do over the Christmas break and ensured I had plenty of time to complete the course. Having previously done other cyber security courses such as Comp Tia Security+ and eLearnSecurity&rsquo;s PTPV4 course, I liked the fact that the PWK course was heavily practical in nature and had an extensive virtual lab to test penetration testing techniques on a variety of systems.</p>
 <p>In my opinion the OSCP certification is worth the initial cost and has a high return of investment, compared to other certifications due to the fact the course is practical and proves to employers the candidate is competent in penetration testing concepts and can apply them to a multitude of environments. Having spoken to hiring managers, the OSCP qualification is highly desirable and is vastly gaining recognition around the world, which makes this certification an excellent way to get into the information security field.</p>
@@ -354,10 +354,10 @@ nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00
         
         <item>
             <title>SIGINT CTF 2017 Writeup</title>
-            <link>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</link>
+            <link>https://blog.jameshemmings.co.uk/2017/01/22/sigint-ctf-2017-writeup/</link>
             <pubDate>Sun, 22 Jan 2017 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2017/01/22/sigint-ctf-2017-writeup/</guid>
             <description>The other week me and a team from Abertay University went to Edinburgh for a CTF hosted by SIGINT. The CTF was a jeopardy style CTF with various categories of challenges such as Binary Exploitation, Reverse Engineering, Web Challenges and more. Unfortunately as there was a team limit of four, I was unable to join the team from my university and was placed with another team.
 I decided I&amp;rsquo;d post a blog post on some of the challenges I undertook, and how I solved them.</description>
             <content type="html"><![CDATA[<p>The other week me and a team from Abertay University went to Edinburgh for a CTF hosted by SIGINT. The CTF was a jeopardy style CTF with various categories of challenges such as Binary Exploitation, Reverse Engineering, Web Challenges and more. Unfortunately as there was a team limit of four, I was unable to join the team from my university and was placed with another team.</p>
@@ -439,10 +439,10 @@ I decided I&amp;rsquo;d post a blog post on some of the challenges I undertook, 
         
         <item>
             <title>MASPTv2 - Mobile Application Security and Penetration Testing Course</title>
-            <link>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</link>
+            <link>https://blog.jameshemmings.co.uk/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</link>
             <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2016/10/16/masptv2-mobile-application-security-and-penetration-testing-course/</guid>
             <description>So about three weeks ago I won an &amp;ldquo;Elite&amp;rdquo; edition of the new mobile penetration testing course from eLearnSecurity by watching their webinar and being randomly selected. I&amp;rsquo;m really excited about this course and have been getting started now that it&amp;rsquo;s been released. I really did not expect to win either!
 This really helps being on a student budget, and will be relevant to the mobile development module at Abertay University next semester, I&amp;rsquo;ll be posting a review once I finish and pass the course.</description>
             <content type="html"><![CDATA[<p>So about three weeks ago I won an &ldquo;Elite&rdquo; edition of the new mobile penetration testing course from eLearnSecurity by watching their webinar and being randomly selected. I&rsquo;m really excited about this course and have been getting started now that it&rsquo;s been released. I really did not expect to win either!</p>
@@ -455,10 +455,10 @@ This really helps being on a student budget, and will be relevant to the mobile 
         
         <item>
             <title>SHU CTF - Cyber Security Challenge</title>
-            <link>https://jamesit.github.io/2016/10/16/shu-ctf-cyber-security-challenge/</link>
+            <link>https://blog.jameshemmings.co.uk/2016/10/16/shu-ctf-cyber-security-challenge/</link>
             <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2016/10/16/shu-ctf-cyber-security-challenge/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2016/10/16/shu-ctf-cyber-security-challenge/</guid>
             <description>Yesterday I participated in a capture the flag event at Sheffield Hallam University organised by Cyber Security Challenge UK, it was a really interesting experience for my first in person CTF and I took away some points and advice for future CTF&amp;rsquo;s and things I need to look at and research. I arrived at around 9:30am and got myself signed in and then had some pre-game coffee (Very important before the CTF!</description>
             <content type="html"><![CDATA[<p>Yesterday I participated in a capture the flag event at Sheffield Hallam University organised by Cyber Security Challenge UK, it was a really interesting experience for my first in person CTF and I took away some points and advice for future CTF&rsquo;s and things I need to look at and research. I arrived at around 9:30am and got myself signed in and then had some pre-game coffee (Very important before the CTF!!) once everyone started arriving eventually the hosts talked about the schedule for the day, the rules and what prizes are on offer.</p>
 <p><img src="images/IMG_0124-300x225.jpg" alt="img_0124"></p>
@@ -475,10 +475,10 @@ This really helps being on a student budget, and will be relevant to the mobile 
         
         <item>
             <title>PGP Transition Statement</title>
-            <link>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</link>
+            <link>https://blog.jameshemmings.co.uk/2016/09/15/pgp-transition-statement/</link>
             <pubDate>Thu, 15 Sep 2016 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2016/09/15/pgp-transition-statement/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2016/09/15/pgp-transition-statement/</guid>
             <description>-&amp;mdash;-BEGIN PGP SIGNED MESSAGE&amp;mdash;&amp;ndash; Hash: SHA256
 OpenPGP Key Transition Statement for James Hemmings / james@hemmings.pw
 I have created a new OpenPGP key and will be transitioning away from my old key. The old key has not been compromised and will continue to be valid for a short period of time, but I prefer all future correspondence to be encrypted to the new key, and will be making signatures with the new key going forward.</description>
@@ -513,10 +513,10 @@ I have created a new OpenPGP key and will be transitioning away from my old key.
         
         <item>
             <title>Goals for 2016/2017</title>
-            <link>https://jamesit.github.io/2016/08/20/goals-for-2016/2017/</link>
+            <link>https://blog.jameshemmings.co.uk/2016/08/20/goals-for-2016/2017/</link>
             <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2016/08/20/goals-for-2016/2017/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2016/08/20/goals-for-2016/2017/</guid>
             <description>Just been thinking about my plans for this year, and been thinking about taking OSCP over the summer period to help increase my skills in the penetration testing field. It seems to be a really good challenging course, which tests your abilities and with it being valuable to employers, something I should do and is the logical next step after the eLearnSecurity eCPPT course I did last year.
 https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/
  Anyone else took this course before?</description>
@@ -529,10 +529,10 @@ https://www.offensive-security.com/information-security-certifications/oscp-offe
         
         <item>
             <title>US Year Abroad Trip</title>
-            <link>https://jamesit.github.io/2016/07/28/us-year-abroad-trip/</link>
+            <link>https://blog.jameshemmings.co.uk/2016/07/28/us-year-abroad-trip/</link>
             <pubDate>Thu, 28 Jul 2016 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2016/07/28/us-year-abroad-trip/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2016/07/28/us-year-abroad-trip/</guid>
             <description>Just thought I&amp;rsquo;d make a post regarding what I&amp;rsquo;ve been up to this year. I have been in the United States Of America since July 2015 for a study abroad program which I was very lucky to be accepted onto, and have been making the most of this opportunity since I got here. I completed two Semesters at the Pennsylvania College Of Technology and have also been working as an EMT for the college responding to 911 emergencies and volunteering with the fire department.</description>
             <content type="html"><![CDATA[<p>Just thought I&rsquo;d make a post regarding what I&rsquo;ve been up to this year. I have been in the United States Of America since July 2015 for a study abroad program which I was very lucky to be accepted onto, and have been making the most of this opportunity since I got here. I completed two Semesters at the Pennsylvania College Of Technology and have also been working as an EMT for the college responding to 911 emergencies and volunteering with the fire department.</p>
 <p>Some may wonder why I have been volunteering as an EMT/Firefighter and wondering if that&rsquo;s what I want to do instead of Cyber Security. However, I find it important to be able to do things outside of studying and going out of your comfort zone is very important. Being able to do something new and exciting and learn important skills is what drew me to volunteering as well as making a difference in the local community and paying my way back for being able to come to the USA.</p>
@@ -546,10 +546,10 @@ https://www.offensive-security.com/information-security-certifications/oscp-offe
         
         <item>
             <title>American EMS</title>
-            <link>https://jamesit.github.io/2015/08/09/american-ems/</link>
+            <link>https://blog.jameshemmings.co.uk/2015/08/09/american-ems/</link>
             <pubDate>Sun, 09 Aug 2015 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2015/08/09/american-ems/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2015/08/09/american-ems/</guid>
             <description>I’m now in the United States Of America, and have completed EMT-Basic at Pelham Training. It’s been an amazing experience, especially participating in clinical rotations at Monroe Emergency Room and Owens County EMS. During my shift we were dispatched to difficulty breathing and unfortunately for me that was the only call we got for the entire shift, one thing I did notice was they send ambulances on lights and sirens for mostly all calls, and then on way back to hospital decide if lights and sirens will be needed, where as in the UK the calls get categorised.</description>
             <content type="html"><![CDATA[<p>I’m now in the United States Of America, and have completed EMT-Basic at Pelham Training. It’s been an amazing experience, especially participating in clinical rotations at Monroe Emergency Room and Owens County EMS. During my shift we were dispatched to difficulty breathing and unfortunately for me that was the only call we got for the entire shift, one thing I did notice was they send ambulances on lights and sirens for mostly all calls, and then on way back to hospital decide if lights and sirens will be needed, where as in the UK the calls get categorised..</p>
 <p>I’ve also noticed other things while in America, such as the minor differences in protocols such as the shock position where as in the UK the legs are raised, to supposedly bring flow back to the central core, however research in the US suggests this is ineffective and would only send around 50ml to the heart and increase blood pressure slightly but cardiac output would not be increased. There is also some differences in equipment in the Ambulances and at the moment King airways and combitubes are used by EMTs and not i-gels which are far superior and easy to use.</p>
@@ -560,10 +560,10 @@ https://www.offensive-security.com/information-security-certifications/oscp-offe
         
         <item>
             <title>Passed CompTIA Security&#43;</title>
-            <link>https://jamesit.github.io/2015/01/06/passed-comptia-security-/</link>
+            <link>https://blog.jameshemmings.co.uk/2015/01/06/passed-comptia-security-/</link>
             <pubDate>Tue, 06 Jan 2015 00:00:00 +0000</pubDate>
             
-            <guid>https://jamesit.github.io/2015/01/06/passed-comptia-security-/</guid>
+            <guid>https://blog.jameshemmings.co.uk/2015/01/06/passed-comptia-security-/</guid>
             <description>I decided to schedule the exam for today as I felt I was ready, and after taking the exam I scored 825/900! Which is a pretty decent score, although I am going to re-go over the two topics I didn&amp;rsquo;t do so good in.
 Overall after taking the exam, I felt it was pretty easy after my three weeks of study. I used a combination of Darril Gibson&amp;rsquo;s book, Professer Messer Videos along with flashcards.</description>
             <content type="html"><![CDATA[<p>I decided to schedule the exam for today as I felt I was ready, and after taking the exam I scored 825/900! Which is a pretty decent score, although I am going to re-go over the two topics I didn&rsquo;t do so good in.</p>

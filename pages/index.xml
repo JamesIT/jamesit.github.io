@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pages on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/pages/</link>
+    <link>https://blog.jameshemmings.co.uk/pages/</link>
     <description>Recent content in Pages on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Wed, 19 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/pages/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Contact</title>
-      <link>https://jamesit.github.io/contact/</link>
+      <link>https://blog.jameshemmings.co.uk/contact/</link>
       <pubDate>Wed, 19 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/contact/</guid>
+      <guid>https://blog.jameshemmings.co.uk/contact/</guid>
       <description>If you need to get in touch, you can contact me on any of the methods below. I am most active on Twitter.
 Email: james[.at.]hemmings.io
 Twitter: @MrJamesHemmings
@@ -23,10 +23,10 @@ To be confirmed.</description>
     
     <item>
       <title>About</title>
-      <link>https://jamesit.github.io/about/</link>
+      <link>https://blog.jameshemmings.co.uk/about/</link>
       <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/about/</guid>
+      <guid>https://blog.jameshemmings.co.uk/about/</guid>
       <description>James is a driven and committed Senior Security Consultant and Red Teamer with five years experience in the information security field. Prior to working in the area of cyber security, he worked as a systems administrator, gaining a solid foundation and understanding of &amp;ldquo;How&amp;rdquo; systems work.
 He has a keen interest in offensive security, specifically in the area of &amp;ldquo;Red Teaming&amp;rdquo;, with several successful Red Team and Assumed Breach assessments under his belt in various sectors such as defence, banking, insurance/finance, healthcare and agriculture.</description>
     </item>

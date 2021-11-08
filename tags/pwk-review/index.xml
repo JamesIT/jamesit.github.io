@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>pwk-review on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/tags/pwk-review/</link>
+    <link>https://blog.jameshemmings.co.uk/tags/pwk-review/</link>
     <description>Recent content in pwk-review on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Thu, 02 Feb 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/pwk-review/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Feb 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/tags/pwk-review/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PWK &amp; OSCP Review - I Tried Harder</title>
-      <link>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</link>
+      <link>https://blog.jameshemmings.co.uk/2017/02/02/pwk-oscp-review-i-tried-harder/</link>
       <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/2017/02/02/pwk-oscp-review-i-tried-harder/</guid>
+      <guid>https://blog.jameshemmings.co.uk/2017/02/02/pwk-oscp-review-i-tried-harder/</guid>
       <description>Over the Christmas break from university, I decided that I&amp;rsquo;d take the PWK (OSCP) course which gave me something to do over the Christmas break and ensured I had plenty of time to complete the course. Having previously done other cyber security courses such as Comp Tia Security+ and eLearnSecurity&amp;rsquo;s PTPV4 course, I liked the fact that the PWK course was heavily practical in nature and had an extensive virtual lab to test penetration testing techniques on a variety of systems.</description>
     </item>
     

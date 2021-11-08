@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>walkthrough on James Hemmings ~ Blog</title>
-    <link>https://jamesit.github.io/tags/walkthrough/</link>
+    <link>https://blog.jameshemmings.co.uk/tags/walkthrough/</link>
     <description>Recent content in walkthrough on James Hemmings ~ Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>(C) James Hemmings 2021, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 22 Jan 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://jamesit.github.io/tags/walkthrough/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Jan 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.jameshemmings.co.uk/tags/walkthrough/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SIGINT CTF 2017 Writeup</title>
-      <link>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</link>
+      <link>https://blog.jameshemmings.co.uk/2017/01/22/sigint-ctf-2017-writeup/</link>
       <pubDate>Sun, 22 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://jamesit.github.io/2017/01/22/sigint-ctf-2017-writeup/</guid>
+      <guid>https://blog.jameshemmings.co.uk/2017/01/22/sigint-ctf-2017-writeup/</guid>
       <description>The other week me and a team from Abertay University went to Edinburgh for a CTF hosted by SIGINT. The CTF was a jeopardy style CTF with various categories of challenges such as Binary Exploitation, Reverse Engineering, Web Challenges and more. Unfortunately as there was a team limit of four, I was unable to join the team from my university and was placed with another team.
 I decided I&amp;rsquo;d post a blog post on some of the challenges I undertook, and how I solved them.</description>
     </item>
