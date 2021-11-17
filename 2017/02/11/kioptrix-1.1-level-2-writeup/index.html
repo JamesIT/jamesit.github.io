@@ -7,7 +7,7 @@
 <meta name="author" content="James Hemmings ">
 <meta name="description" content="I&amp;rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
-nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql" />
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql After viewing the web page, a administrative login panel was found." />
 <meta name="keywords" content="red teaming,redteam,red team,osint,cyber security,penetration testing,security research,vulnerability research,offensive security,@MrJamesHemmings,James Hemmings, ethical-hacking, kioptrix, penetration-testing, vulnhub" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="" />
@@ -45,7 +45,7 @@ nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00
 <meta itemprop="name" content="Kioptrix 1.1 (Level 2) Writeup">
 <meta itemprop="description" content="I&rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
-nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql"><meta itemprop="datePublished" content="2017-02-11T00:00:00+00:00" />
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql After viewing the web page, a administrative login panel was found."><meta itemprop="datePublished" content="2017-02-11T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2017-02-11T00:00:00+00:00" />
 <meta itemprop="wordCount" content="353"><meta itemprop="image" content="https://blog.jameshemmings.co.uk"/>
 <meta itemprop="keywords" content="ethical-hacking,kioptrix,penetration-testing,vulnhub," />
@@ -55,7 +55,7 @@ nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00
 <meta name="twitter:title" content="Kioptrix 1.1 (Level 2) Writeup"/>
 <meta name="twitter:description" content="I&rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
-nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql"/>
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql After viewing the web page, a administrative login panel was found."/>
 
 
 
@@ -63,7 +63,7 @@ nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00
     <meta property="og:title" content="Kioptrix 1.1 (Level 2) Writeup" />
 <meta property="og:description" content="I&rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
-nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql" />
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql After viewing the web page, a administrative login panel was found." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.jameshemmings.co.uk/2017/02/11/kioptrix-1.1-level-2-writeup/" /><meta property="og:image" content="https://blog.jameshemmings.co.uk"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2017-02-11T00:00:00+00:00" />
@@ -176,8 +176,17 @@ if (!doNotTrack) {
       <div class="post-content">
         <p>I&rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.</p>
 <p>The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).</p>
-<p>nmap -sS -T5 192.168.74.134 <code>Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT     STATE SERVICE 22/tcp   open  ssh 80/tcp   open  http 111/tcp  open  rpcbind 443/tcp  open  https 631/tcp  open  ipp 3306/tcp open  mysql</code></p>
-<p>After viewing the web page, a administrative login panel was found. The first step was to attempt to perform SQL injection to see if the web page is vulnerable. The username of &ldquo;admin&rdquo; and &ldquo;wrongpassword' OR &lsquo;a&rsquo;=&lsquo;a&rdquo; was utilised to bypass the login page.</p>
+<pre tabindex="0"><code>nmap -sS -T5 192.168.74.134 
+Nmap scan report for 192.168.74.134 
+Host is up (0.00018s latency). Not shown: 994 closed ports 
+PORT     STATE SERVICE 
+22/tcp   open  ssh 
+80/tcp   open  http 
+111/tcp  open  rpcbind 
+443/tcp  open  https 
+631/tcp  open  ipp 
+3306/tcp open  mysql
+</code></pre><p>After viewing the web page, a administrative login panel was found. The first step was to attempt to perform SQL injection to see if the web page is vulnerable. The username of &ldquo;admin&rdquo; and &ldquo;wrongpassword' OR &lsquo;a&rsquo;=&lsquo;a&rdquo; was utilised to bypass the login page.</p>
 <p><img src="images/Selection_103.png" alt=""></p>
 <p>Voila! We have access. After gaining access, I attempted to include another command along with the IP address to test for the lack of input filtering. If successful, this should display the passwd file.</p>
 <p><img src="images/Selection_105.png" alt=""></p>

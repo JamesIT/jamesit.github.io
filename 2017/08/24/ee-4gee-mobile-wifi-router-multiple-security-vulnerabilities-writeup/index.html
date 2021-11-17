@@ -45,7 +45,7 @@ Other attacks are also possible by misleading and/or tricking users into executi
 <meta itemprop="description" content="After performing security testing on the 4GEE Mobile WiFi router it was discovered to be vulnerable to several security vulnerabilities. These vulnerabilities in combination make it possible for an attacker to remotely exploit the device, which can be achieved through having a user view a crafted texted message that was sent to him.
 Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication."><meta itemprop="datePublished" content="2017-08-24T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2017-08-24T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1925"><meta itemprop="image" content="https://blog.jameshemmings.co.uk"/>
+<meta itemprop="wordCount" content="1923"><meta itemprop="image" content="https://blog.jameshemmings.co.uk"/>
 <meta itemprop="keywords" content="4gee,4gee-wifi-mbb,advisory,csrf,ee,ee60vb-2ae8gb3,jsonp,mobile-wifi,responsible-disclosure,vulnerability,xss," />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.jameshemmings.co.uk"/>
@@ -174,7 +174,11 @@ if (!doNotTrack) {
 <p>Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</p>
 <p>Additionally, multiple JSONP information disclosures were discovered, which display the full username and password of the administrative user while unauthenticated and allow access to multiple privileged functions such as device reset, device reboot and device configuration download/upload and SMS messages stored on the device.</p>
 <p>I&rsquo;d also like to note, the responsiveness and prompt vulnerability resolution from EE, as I was expecting this issue to get ignored or swept under the carpet, like most IOT/Router vulnerabilities, however in this case constant communication was kept throughout the process and the issues resolved.</p>
-<p><strong>Hardware Version/Model:</strong> 4GEE WiFi MBB (EE60VB-2AE8G83). <strong>Vulnerable Software Version:</strong> EE60_00_05.00_25. <strong>Patched Software Version:</strong> EE60_00_05.00_31. <strong>Vulnerability CVE(s):</strong> CVE-2017-14267, CVE-2017-14268, CVE-2017-14269. <strong>Proof of Concept Code:</strong> <a href="https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns">https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns</a></p>
+<p><strong>Hardware Version/Model:</strong> 4GEE WiFi MBB (EE60VB-2AE8G83).</p>
+<p><strong>Vulnerable Software Version:</strong> EE60_00_05.00_25.</p>
+<p><strong>Patched Software Version:</strong> EE60_00_05.00_31.</p>
+<p><strong>Vulnerability CVE(s):</strong> CVE-2017-14267, CVE-2017-14268, CVE-2017-14269.</p>
+<p><strong>Proof of Concept Code:</strong> <a href="https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns">https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns</a></p>
 <h2 id="attack-proof-of-concept">Attack Proof of Concept</h2>
 <p>After finding multiple security vulnerabilities, I decided to chain a number of these together to achieve device compromise remotely via SMS using Stored XSS and CSRF vulnerabilities, which clearly demonstrates the need for even low risk vulnerabilities being patched, as once other issues are found they can be used to achieve further levels of access, as I highlight below.</p>
 <p>So firstly, I decided to create the malicious binary file that we will upload to the victim&rsquo;s device, by modifying the username and password.</p>
@@ -259,13 +263,42 @@ if (!doNotTrack) {
 <h6 id="multiple-unauthenticated-jsonp-information-disclosures">Multiple Unauthenticated JSONP Information Disclosures</h6>
 <p>The 4GEE router uses various JSONP endpoints to retrieve and/or set data, which are vulnerable to unauthenticated information disclosure of sensitive configuration data, settings, administration password and SMS messages/lists, such unauthenticated disclosures could be remotely retrieved using CSRF/XSS/Phishing attacks previously disclosed or via unauthorised users.</p>
 <p>The following endpoints have been deemed to be vulnerable:</p>
-<p>[sourcecode language=&ldquo;plain&rdquo;] http://192.168.1.1/goform/getPasswordSaveInfo http://192.168.1.1/goform/getSMSAutoRedirectSetting http://192.168.1.1/goform/getSMSStoreState http://192.168.1.1/goform/getSMSReportlist http://192.168.1.1/goform/getSingleSMSReport?rand=0.133713371337 http://192.168.1.1/goform/getNetworkInfo http://192.168.1.1/goform/getSingleSMS?sms_id=1&amp;amp;amp;amp;amp;amp;amp;amp;rand=0.133713371337 http://192.168.1.1/goform/getProfileList http://192.168.1.1/goform/getRouterInfo http://192.168.1.1/goform/getSimcardInfo http://192.168.1.1/goform/getWlanInfo http://192.168.1.1/goform/getWlanClientInfo http://192.168.1.1/goform/getSysteminfo http://192.168.1.1/goform/getWanInfo http://192.168.1.1/goform/getImgInfo http://192.168.1.1/goform/getDMZInfo http://192.168.1.1/goform/getUsbIP?rand=0.13371337 http://192.168.1.1/goform/getUsbIP?rand=0.13371337 http://192.168.1.1/goform/getMACFilterInfo[/sourcecode]</p>
-<p>After viewing various responses and requests within Burp Suite, various endpoints were accessed while not authenticated to the web application, which resulted in sensitive information being disclosed, such as the device username, password and SMS messages, as demonstrated below.</p>
+<pre tabindex="0"><code>http://192.168.1.1/goform/getPasswordSaveInfo 
+http://192.168.1.1/goform/getSMSAutoRedirectSetting 
+http://192.168.1.1/goform/getSMSStoreState 
+http://192.168.1.1/goform/getSMSReportlist 
+http://192.168.1.1/goform/getSingleSMSReport?rand=0.133713371337 
+http://192.168.1.1/goform/getNetworkInfo 
+http://192.168.1.1/goform/getSingleSMS?sms_id=1&amp;rand=0.133713371337 
+http://192.168.1.1/goform/getProfileList 
+http://192.168.1.1/goform/getRouterInfo 
+http://192.168.1.1/goform/getSimcardInfo 
+http://192.168.1.1/goform/getWlanInfo 
+http://192.168.1.1/goform/getWlanClientInfo 
+http://192.168.1.1/goform/getSysteminfo 
+http://192.168.1.1/goform/getWanInfo 
+http://192.168.1.1/goform/getImgInfo 
+http://192.168.1.1/goform/getDMZInfo 
+http://192.168.1.1/goform/getUsbIP?rand=0.13371337 
+http://192.168.1.1/goform/getUsbIP?rand=0.13371337 
+http://192.168.1.1/goform/getMACFilterInfo
+</code></pre><p>After viewing various responses and requests within Burp Suite, various endpoints were accessed while not authenticated to the web application, which resulted in sensitive information being disclosed, such as the device username, password and SMS messages, as demonstrated below.</p>
 <p><img src="images/Password.png" alt=""></p>
 <p><img src="images/SMSContent.png" alt=""></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p><em>27th July, 2017 at 21:32 GMT. Email sent with technical vulnerability information and PoC.</em> <em>27th July, 2017 at 22:00 GMT. Response from EE devices manager, confirming receipt of PoC.</em> <em>31th July, 2017 at  18:47 GMT. Update from vendor, patches being developed for reported issues.</em> <em>1st August, 2017 at 10:43 GMT. Reply sent to vendor.</em> <em>10th August, 2017 at 10:32 GMT. Update from vendor, patches still being developed.</em> <em>18th August, 2017 at 12:11 GMT. Email sent to vendor asking for update/ETA.</em> <em>18th August, 2017 at 12:15 GMT. Response from vendor, updates to be released on Monday.</em> <em>18th August, 2017 at 12:30 GMT. Reply sent to vendor with device IMEI for online update process.</em> <em>22nd August, 2017 at 15:54 GMT. Response from vendor, beta firmware released to verify  changes.</em> <em>23rd August, 2017 at 21:29 GMT. Reply sent to vendor, vulnerabilities successfully patched.</em> <em>24th August, 2017 at 09:32 GMT. Response from vendor, patch publicly released to customers.</em> <em>24th August, 2017 at 12:00 GMT. Full disclosure via Blog.</em></p>
-
+<pre tabindex="0"><code>27th July, 2017 at 21:32 GMT. Email sent with technical vulnerability information and PoC.
+27th July, 2017 at 22:00 GMT. Response from EE devices manager, confirming receipt of PoC.
+31th July, 2017 at  18:47 GMT. Update from vendor, patches being developed for reported issues.
+1st August, 2017 at 10:43 GMT. Reply sent to vendor.
+10th August, 2017 at 10:32 GMT. Update from vendor, patches still being developed.
+18th August, 2017 at 12:11 GMT. Email sent to vendor asking for update/ETA.
+18th August, 2017 at 12:15 GMT. Response from vendor, updates to be released on Monday.
+18th August, 2017 at 12:30 GMT. Reply sent to vendor with device IMEI for online update process.
+22nd August, 2017 at 15:54 GMT. Response from vendor, beta firmware released to verify  changes.
+23rd August, 2017 at 21:29 GMT. Reply sent to vendor, vulnerabilities successfully patched.
+24th August, 2017 at 09:32 GMT. Response from vendor, patch publicly released to customers.
+24th August, 2017 at 12:00 GMT. Full disclosure via Blog.
+</code></pre>
       </div>
     </article>
 
@@ -308,7 +341,7 @@ if (!doNotTrack) {
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        1925 Words
+        1923 Words
       </p>
 
       <p>

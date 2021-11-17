@@ -195,12 +195,12 @@ if (!doNotTrack) {
 <p>As demonstrated this can be deadly, as now an attacker can have access to the users account by stealing the user cookie and then the private medical information located within it. Specifically, the attacker would steal the user cookie on every login, using a cookie theft payload.</p>
 <p><img src="images/GoodSAMCSRF5.png" alt=""></p>
 <p><strong>Account Profile - Stored Cross Site Scripting (XSS):</strong></p>
-<p>The first step was to change the profile field &ldquo;Emergency Contact Full Name&rdquo; to <em>&quot;&quot;&gt;<!-- raw HTML omitted -->alert(document.domain)<!-- raw HTML omitted -->&quot;</em> and then press the &ldquo;Update Profile&rdquo; page which results in XSS execution.</p>
+<p>The first step was to change the profile field &ldquo;Emergency Contact Full Name&rdquo; to <code>&quot;&quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;&quot;</code> and then press the &ldquo;Update Profile&rdquo; page which results in XSS execution.</p>
 <h2 id="imagesgoodsamxss_1png"><img src="images/GoodSamXSS_1.png" alt=""></h2>
 <p>As demonstrated below, the JavaScript XSS payload is executed, confirming it is within the web application context (<a href="http://www.goodsamapp.org">www.goodsamapp.org</a>).</p>
 <p><img src="images/GoodSamXSS_2.png" alt=""></p>
-<p>Now you may be wondering, how does the XSS attack work exactly? What am I looking for to find such vulnerabilities. Well specifically in this case, the account profile page loads the data within value fields and the value is set within two speech marks (E.g <em>&ldquo;VALUE&rdquo;).</em></p>
-<p>Now due to how HTML works, if you put another &quot; within the payload you will then escape out of the value tag and can inject your own HTML tags within it such as <em>onclick=&quot;<!-- raw HTML omitted -->alert(1)<!-- raw HTML omitted -->&quot;</em> or by fully escaping the input tag by doing <em>&quot;&gt;<!-- raw HTML omitted -->alert(1)<!-- raw HTML omitted --></em> which is what I did in this case.</p>
+<p>Now you may be wondering, how does the XSS attack work exactly? What am I looking for to find such vulnerabilities. Well specifically in this case, the account profile page loads the data within value fields and the value is set within two speech marks (E.g &ldquo;VALUE&rdquo;).</p>
+<p>Now due to how HTML works, if you put another &quot; within the payload you will then escape out of the value tag and can inject your own HTML tags within it such as <code>onclick=&quot;&lt;script&gt;alert(1)&lt;/script&gt;&quot;</code> or by fully escaping the input tag by doing <code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code> which is what I did in this case.</p>
 <p><img src="images/Screenshot-at-2017-07-17-230539.png" alt=""></p>
 <p><strong>Chanining CSRF/XSS Demonstration:</strong></p>
 <!-- raw HTML omitted -->
@@ -220,10 +220,24 @@ if (!doNotTrack) {
 <p>My feedback and suggestions to the GoodSAM team, would be to ensure they honour their commitment to taking security seriously [7], even though this vulnerability is not a critical RCE (Remote Code Execution) or severely critical vulnerability, it is still a vulnerability that can attack users via phishing, or other means to achieve full account takeover and compromise of highly sensitive and private medical information, that once stolen is in the wild potentially. Additionally, by taking a defence in depth approach to security, you mitigate the possibility of medium risk vulnerabilities being chained to achieve further levels of access, as well as committing to your statement of &ldquo;data security&rdquo;.</p>
 <p>Additionally, resolving XSS and CSRF vulnerabilities do not put undue burden on the organisation and can be easily remediated by implementing input sanitization, encoding and filtering along with ensuring POST requests have anti-CSRF or verification tokens, to ensure they are only sent within the site context and not by third party websites [3][5][6].</p>
 <h2 id="references"><strong>References:</strong></h2>
-<p><em>[1] <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a></em> <em>[2] <a href="https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)">https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)</a></em> <em>[3] <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet</a></em> <em>[4] <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)</a></em> <em>[5] <a href="https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet</a></em> <em>[6] <a href="https://www.owasp.org/index.php/Defense_in_depth">https://www.owasp.org/index.php/Defense_in_depth</a></em> [7] <a href="https://www.goodsamapp.org/dataprotection">https://www.goodsamapp.org/dataprotection</a></p>
+<p>[1] <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a>
+[2] <a href="https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)">https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)</a>
+[3] <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet</a>
+[4] <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)</a>
+[5] <a href="https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet</a>
+[6] <a href="https://www.owasp.org/index.php/Defense_in_depth">https://www.owasp.org/index.php/Defense_in_depth</a>
+[7] <a href="https://www.goodsamapp.org/dataprotection">https://www.goodsamapp.org/dataprotection</a></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p><em>30th June, 2017 at 23:08 GMT. Email sent requesting security contact information.</em> <em>14th July, 2017 at 19:51 GMT. No response from first email, vulnerability POC/information sent to three listed email addresses.</em> <em>14th July, 2017 at 20:07 GMT. Reply received (Technical Director), dismissing vulnerability as non-issue.</em> <em>14th July, 2017 at 20:26 GMT. Further technical information sent, including video PoC.</em> <em>15th July, 2017 at 14:58 GMT. Reply received (Technical Director), further dismissing vulnerability.</em> <em>15th July, 2017 at 15:24 GMT. Further explanation/clarification sent, explaining risks.</em> <em>17th July, 2017 at 14:12 GMT. Email sent requesting update/checking email was received and permission to disclose, if no intention of resolving issue.</em> <em>17th July, 2017 at 15:55 GMT. Reply received (Technical Director). Advises I can disclose or notify whoever and that they have no interest talking or speaking to me, unless I can breach their servers and extract data.</em> <em>17th July, 2017 at 19:30 GMT. Full Disclosure via Blog.</em></p>
-
+<pre tabindex="0"><code>30th June, 2017 at 23:08 GMT. Email sent requesting security contact information.
+14th July, 2017 at 19:51 GMT. No response from first email, vulnerability POC/information sent to three listed email addresses.
+14th July, 2017 at 20:07 GMT. Reply received (Technical Director), dismissing vulnerability as non-issue.
+14th July, 2017 at 20:26 GMT. Further technical information sent, including video PoC.
+15th July, 2017 at 14:58 GMT. Reply received (Technical Director), further dismissing vulnerability.
+15th July, 2017 at 15:24 GMT. Further explanation/clarification sent, explaining risks.
+17th July, 2017 at 14:12 GMT. Email sent requesting update/checking email was received and permission to disclose, if no intention of resolving issue.
+17th July, 2017 at 15:55 GMT. Reply received (Technical Director). Advises I can disclose or notify whoever and that they have no interest talking or speaking to me, unless I can breach their servers and extract data.
+17th July, 2017 at 19:30 GMT. Full Disclosure via Blog.
+</code></pre>
       </div>
     </article>
 

@@ -20,7 +20,11 @@ This would enable any user on the LAN to gain access to the router using these h
             <content type="html"><![CDATA[<p>After finding vulnerabilities in the 4GEE Mobile WiFi Router last year, I thought I would give my brand new EE home broadband router a run for it&rsquo;s money and it seems like last time, it&rsquo;s vulnerable to another attack vector, this time being hard-coded credentials for SSH root access, which luckily is only available via the LAN.</p>
 <p>This would enable any user on the LAN to gain access to the router using these hard-coded credentials.</p>
 <p><strong>Update: 26/10/2018 - EE have released patch that fixes the issue. Users are recommended to follow the EE router upgrade process via the web UI.</strong></p>
-<p><strong>Hardware Version/Model:</strong> 4GEE Router HH70VB-2BE8GB3 (HH70VB) <strong>Vulnerable Software Version:</strong> HH70_E1_02.00_19 <strong>Patched Software Version:</strong> HH70_E1_02.00_21 <strong>Vulnerability CVE(s):</strong> CVE-2018-10532 <strong>Product URL:</strong> <a href="https://shop.ee.co.uk/dongles/pay-monthly-mobile-broadband/4gee-router/details">https://shop.ee.co.uk/dongles/pay-monthly-mobile-broadband/4gee-router/details</a></p>
+<p><strong>Hardware Version/Model:</strong> 4GEE Router HH70VB-2BE8GB3 (HH70VB)</p>
+<p><strong>Vulnerable Software Version:</strong> HH70_E1_02.00_19</p>
+<p><strong>Patched Software Version:</strong> HH70_E1_02.00_21</p>
+<p><strong>Vulnerability CVE(s):</strong> CVE-2018-10532</p>
+<p><strong>Product URL:</strong> <a href="https://shop.ee.co.uk/dongles/pay-monthly-mobile-broadband/4gee-router/details">https://shop.ee.co.uk/dongles/pay-monthly-mobile-broadband/4gee-router/details</a></p>
 <h2 id="attack-proof-of-concept">Attack Proof of Concept</h2>
 <p>As shown below, by logging into the &ldquo;admin&rdquo; user over SSH, it is possible to then discover the hard-coded SSH password using strings on the web server binary. This is quite interesting, as the &ldquo;admin&rdquo; user password is changed once the WebUI admin user has changed also.</p>
 <p><img src="images/defaultcred1_redacted.jpg" alt=""></p>
@@ -30,18 +34,52 @@ This would enable any user on the LAN to gain access to the router using these h
 <p>An issue was discovered on EE 4GEE HH70VB-2BE8GB3 HH70_E1_02.00_19 devices.</p>
 <p>Hardcoded root SSH credentials were discovered to be stored within the &ldquo;core_app&rdquo; binary utilised by the EE router for networking services. An attacker with knowledge of the default password (&ldquo;oelinux123&rdquo;) could login to the router via SSH as the root user, which could allow for the loss of confidentiality, integrity, and availability of the system. This would also allow for the bypass of the &ldquo;AP Isolation&rdquo; mode that is supported by the router, as well as the settings for multiple Wireless networks, which a user may use for guest clients.</p>
 <p>An attacker must be able to communicate with the SSH server, however the router supports multiple networks and &ldquo;AP Isolation&rdquo; mode which could be bypassed if the malicious user compromises the router with the default credentials/hard coded SSH credentials.</p>
-<p><strong>Affected Component</strong>
-root@OpenWrt:/usr/bin# strings core_app | grep root
+<p><strong>Affected Component</strong></p>
+<blockquote>
+<p>root@OpenWrt:/usr/bin# strings core_app | grep root
 sshpass -p oelinux123 scp <a href="mailto:root@192.168.225.1:%25s">root@192.168.225.1:%s</a> %s
 sshpass -p oelinux123 scp %s <a href="mailto:root@192.168.225.1:%25s">root@192.168.225.1:%s</a></p>
+</blockquote>
 <h2 id="remediation">Remediation</h2>
 <p>It appears that EE have mitigated this vulnerability by disabling SSH access completely, as shown below, after comparing both firmware update packages (Old/new).</p>
 <p>Although this does not fix the exact issue of hardcoded root credentials, it is still a mitigation.</p>
 <p><strong>Old:</strong> <img src="images/Old_Patch.jpg" alt=""></p>
 <p><strong>New:</strong><img src="images/New_Patch.jpg" alt=""></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p>29th April, 2018 at 12:52 GMT. Email sent with technical vulnerability information and PoC. 10th May, 2018 at 23:23 GMT. Followup email sent, no acknowledgement received. 11th May, 2018 at 06:47 GMT. Acknowledgement received from EE, remedial work being reviewed. 29th June, 2018 at 18:56 GMT. Followup email sent, noticed EE security patch email.. confirming if this fixes vulnerability. 29th June, 2018 at 19:01 GMT. Email from EE, still evaluating fixes of the vulnerability. 18th July, 2018 at 19:32 GMT. Email sent to EE, asking for update as 90 day window closing shortly. 18th July, 2018 at 22:12 GMT. Reply from EE, asking for IMEI and current S/W version. 19th July, 2018 at 15:14 GMT. Reply from EE, asking for exact steps to reproduce issue. 20th July, 2018 at 07:56 GMT. Email sent to EE with requested information. 4th October, 2018 at 22:58 GMT. Email sent to EE asking for update. 5th October, 2018 at 08:29 GMT. Reply from EE stating its patched. 5th October, 2018 at 19:51 GMT. Advised EE that its not patched on this version. 6th October, 2018 at 06:54 GMT. Reply from EE, stating they will check with their development team and will come back to me on Monday. 6th October, 2018 at 08:30 GMT. Email to EE acknowledging last email and that is OK. 6th October, 2018 at 08:40 GMT. Reply from EE asking for clarity on the vulnerability and the recommended fix, as well as the overall risk rating. 6th October, 2018 at 09:11 GMT. Email sent to EE with the requested information. 6th October, 2018 at 09:17 GMT. Reply sent from EE, mentioning the comments/advice is understood and they will be in touch on Monday. 8th October, 2018 at 21:50 GMT. Email sent to EE asking for fix ETA. 8th October, 2018 at 22:03 GMT. Reply from EE, advising they are still working on the issue and the options. Update to be provided tomorrow. 9th October, 2018 at 20:05 GMT. Reply from EE, confirming SSH functionality has been disabled in the fix and there is further verification required before an update is released. 9th October, 2018 at 20:13 GMT. Email sent to EE asking for approximate ETA and planned fix date. 9th October, 2018 at 20:16 GMT. Reply from EE, stating its being pushed through as a matter of urgency, that the fix has been verified and the binary is being compiled at the moment, further verification still required. 12th October, 2018 at 11:51 GMT. Email sent to EE, asking for approximate ETA. 12th October, 2018 at 12:43 GMT. Reply from EE, stating validation completed 20 minutes ago. Consumer package to be deployed rather than the test variant, will be released this week. 13th October, 2018 at 19:39 GMT. Email sent to EE, asking for notification when consumer version released. Stated I will hold public disclosure at present. 17th October, 2018 at 15:40 GMT. Reply from EE, stating validation has been completed, however theirs another minor change needed. Phone call to be conducted tomorrow to finalise build and if two changes are required or not. Feedback to be provided tomorrow. 18th October, 2018 at 19:02 GMT. Email sent to EE, asking for updates. 18th October, 2018 at 19:39 GMT. Reply from EE, testing has been completed but another update is going to be included and the bundle will be released early next week. 18th October, 2018 at 20:26 GMT. Email sent to EE, mentioning this was said last week and that I will be going public with vulnerability disclosure next Wednesday, as this is well over 90 day agreed disclosure period. 21st October, 2018 at 20:17 GMT. Reply from EE, stating they addressed the SSH issue by disabling it but another patch needs to be merged to manage customer experience. Original validation of vulnerability took longer than anticipated. 23rd October, 2018 at 18:05 GMT. Email sent to EE, asking for further updates. 23rd October, 2018 at 18:11 GMT. Reply from EE, stating release will be deployed Thursday and asking for IMEI. 24th October, 2018 at 20:01 GMT. Email sent to EE with IMEI.</p>
-]]></content>
+<pre tabindex="0"><code>29th April, 2018 at 12:52 GMT. Email sent with technical vulnerability information and PoC. 
+10th May, 2018 at 23:23 GMT. Followup email sent, no acknowledgement received. 
+11th May, 2018 at 06:47 GMT. Acknowledgement received from EE, remedial work being reviewed. 
+29th June, 2018 at 18:56 GMT. Followup email sent, noticed EE security patch email.. confirming if this fixes vulnerability. 
+29th June, 2018 at 19:01 GMT. Email from EE, still evaluating fixes of the vulnerability. 
+18th July, 2018 at 19:32 GMT. Email sent to EE, asking for update as 90 day window closing shortly. 
+18th July, 2018 at 22:12 GMT. Reply from EE, asking for IMEI and current S/W version. 
+19th July, 2018 at 15:14 GMT. Reply from EE, asking for exact steps to reproduce issue. 
+20th July, 2018 at 07:56 GMT. Email sent to EE with requested information. 
+4th October, 2018 at 22:58 GMT. Email sent to EE asking for update. 
+5th October, 2018 at 08:29 GMT. Reply from EE stating its patched. 
+5th October, 2018 at 19:51 GMT. Advised EE that its not patched on this version. 
+6th October, 2018 at 06:54 GMT. Reply from EE, stating they will check with their development team and will come back to me on Monday. 
+6th October, 2018 at 08:30 GMT. Email to EE acknowledging last email and that is OK. 
+6th October, 2018 at 08:40 GMT. Reply from EE asking for clarity on the vulnerability and the recommended fix, as well as the overall risk rating. 
+6th October, 2018 at 09:11 GMT. Email sent to EE with the requested information. 
+6th October, 2018 at 09:17 GMT. Reply sent from EE, mentioning the comments/advice is understood and they will be in touch on Monday. 
+8th October, 2018 at 21:50 GMT. Email sent to EE asking for fix ETA. 
+8th October, 2018 at 22:03 GMT. Reply from EE, advising they are still working on the issue and the options. Update to be provided tomorrow. 
+9th October, 2018 at 20:05 GMT. Reply from EE, confirming SSH functionality has been disabled in the fix and there is further verification required before an update is released. 
+9th October, 2018 at 20:13 GMT. Email sent to EE asking for approximate ETA and planned fix date. 
+9th October, 2018 at 20:16 GMT. Reply from EE, stating its being pushed through as a matter of urgency, that the fix has been verified and the binary is being compiled at the moment, further verification still required. 
+12th October, 2018 at 11:51 GMT. Email sent to EE, asking for approximate ETA. 
+12th October, 2018 at 12:43 GMT. Reply from EE, stating validation completed 20 minutes ago. Consumer package to be deployed rather than the test variant, will be released this week. 
+13th October, 2018 at 19:39 GMT. Email sent to EE, asking for notification when consumer version released. Stated I will hold public disclosure at present. 
+17th October, 2018 at 15:40 GMT. Reply from EE, stating validation has been completed, however theirs another minor change needed. Phone call to be conducted tomorrow to finalise build and if two changes are required or not. Feedback to be provided tomorrow. 
+18th October, 2018 at 19:02 GMT. Email sent to EE, asking for updates. 
+18th October, 2018 at 19:39 GMT. Reply from EE, testing has been completed but another update is going to be included and the bundle will be released early next week. 
+18th October, 2018 at 20:26 GMT. Email sent to EE, mentioning this was said last week and that I will be going public with vulnerability disclosure next Wednesday, as this is well over 90 day agreed disclosure period. 
+21st October, 2018 at 20:17 GMT. Reply from EE, stating they addressed the SSH issue by disabling it but another patch needs to be merged to manage customer experience. Original validation of vulnerability took longer than anticipated. 
+23rd October, 2018 at 18:05 GMT. Email sent to EE, asking for further updates. 
+23rd October, 2018 at 18:11 GMT. Reply from EE, stating release will be deployed Thursday and asking for IMEI. 
+24th October, 2018 at 20:01 GMT. Email sent to EE with IMEI.
+</code></pre>]]></content>
         </item>
         
         <item>
@@ -56,7 +94,11 @@ Other attacks are also possible by misleading and/or tricking users into executi
 <p>Other attacks are also possible by misleading and/or tricking users into executing code or clicking crafted URLs to trigger multiple functions such as device reset, device reboot, device restore (malicious config), sending SMS messages or stealing device configuration information, SMS messages and any other information on the device that a user may have access to and without authentication.</p>
 <p>Additionally, multiple JSONP information disclosures were discovered, which display the full username and password of the administrative user while unauthenticated and allow access to multiple privileged functions such as device reset, device reboot and device configuration download/upload and SMS messages stored on the device.</p>
 <p>I&rsquo;d also like to note, the responsiveness and prompt vulnerability resolution from EE, as I was expecting this issue to get ignored or swept under the carpet, like most IOT/Router vulnerabilities, however in this case constant communication was kept throughout the process and the issues resolved.</p>
-<p><strong>Hardware Version/Model:</strong> 4GEE WiFi MBB (EE60VB-2AE8G83). <strong>Vulnerable Software Version:</strong> EE60_00_05.00_25. <strong>Patched Software Version:</strong> EE60_00_05.00_31. <strong>Vulnerability CVE(s):</strong> CVE-2017-14267, CVE-2017-14268, CVE-2017-14269. <strong>Proof of Concept Code:</strong> <a href="https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns">https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns</a></p>
+<p><strong>Hardware Version/Model:</strong> 4GEE WiFi MBB (EE60VB-2AE8G83).</p>
+<p><strong>Vulnerable Software Version:</strong> EE60_00_05.00_25.</p>
+<p><strong>Patched Software Version:</strong> EE60_00_05.00_31.</p>
+<p><strong>Vulnerability CVE(s):</strong> CVE-2017-14267, CVE-2017-14268, CVE-2017-14269.</p>
+<p><strong>Proof of Concept Code:</strong> <a href="https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns">https://github.com/JamesIT/vuln-advisories-/tree/master/EE-4GEE-Multiple-Vulns</a></p>
 <h2 id="attack-proof-of-concept">Attack Proof of Concept</h2>
 <p>After finding multiple security vulnerabilities, I decided to chain a number of these together to achieve device compromise remotely via SMS using Stored XSS and CSRF vulnerabilities, which clearly demonstrates the need for even low risk vulnerabilities being patched, as once other issues are found they can be used to achieve further levels of access, as I highlight below.</p>
 <p>So firstly, I decided to create the malicious binary file that we will upload to the victim&rsquo;s device, by modifying the username and password.</p>
@@ -141,13 +183,42 @@ Other attacks are also possible by misleading and/or tricking users into executi
 <h6 id="multiple-unauthenticated-jsonp-information-disclosures">Multiple Unauthenticated JSONP Information Disclosures</h6>
 <p>The 4GEE router uses various JSONP endpoints to retrieve and/or set data, which are vulnerable to unauthenticated information disclosure of sensitive configuration data, settings, administration password and SMS messages/lists, such unauthenticated disclosures could be remotely retrieved using CSRF/XSS/Phishing attacks previously disclosed or via unauthorised users.</p>
 <p>The following endpoints have been deemed to be vulnerable:</p>
-<p>[sourcecode language=&ldquo;plain&rdquo;] http://192.168.1.1/goform/getPasswordSaveInfo http://192.168.1.1/goform/getSMSAutoRedirectSetting http://192.168.1.1/goform/getSMSStoreState http://192.168.1.1/goform/getSMSReportlist http://192.168.1.1/goform/getSingleSMSReport?rand=0.133713371337 http://192.168.1.1/goform/getNetworkInfo http://192.168.1.1/goform/getSingleSMS?sms_id=1&amp;amp;amp;amp;amp;amp;amp;amp;rand=0.133713371337 http://192.168.1.1/goform/getProfileList http://192.168.1.1/goform/getRouterInfo http://192.168.1.1/goform/getSimcardInfo http://192.168.1.1/goform/getWlanInfo http://192.168.1.1/goform/getWlanClientInfo http://192.168.1.1/goform/getSysteminfo http://192.168.1.1/goform/getWanInfo http://192.168.1.1/goform/getImgInfo http://192.168.1.1/goform/getDMZInfo http://192.168.1.1/goform/getUsbIP?rand=0.13371337 http://192.168.1.1/goform/getUsbIP?rand=0.13371337 http://192.168.1.1/goform/getMACFilterInfo[/sourcecode]</p>
-<p>After viewing various responses and requests within Burp Suite, various endpoints were accessed while not authenticated to the web application, which resulted in sensitive information being disclosed, such as the device username, password and SMS messages, as demonstrated below.</p>
+<pre tabindex="0"><code>http://192.168.1.1/goform/getPasswordSaveInfo 
+http://192.168.1.1/goform/getSMSAutoRedirectSetting 
+http://192.168.1.1/goform/getSMSStoreState 
+http://192.168.1.1/goform/getSMSReportlist 
+http://192.168.1.1/goform/getSingleSMSReport?rand=0.133713371337 
+http://192.168.1.1/goform/getNetworkInfo 
+http://192.168.1.1/goform/getSingleSMS?sms_id=1&amp;rand=0.133713371337 
+http://192.168.1.1/goform/getProfileList 
+http://192.168.1.1/goform/getRouterInfo 
+http://192.168.1.1/goform/getSimcardInfo 
+http://192.168.1.1/goform/getWlanInfo 
+http://192.168.1.1/goform/getWlanClientInfo 
+http://192.168.1.1/goform/getSysteminfo 
+http://192.168.1.1/goform/getWanInfo 
+http://192.168.1.1/goform/getImgInfo 
+http://192.168.1.1/goform/getDMZInfo 
+http://192.168.1.1/goform/getUsbIP?rand=0.13371337 
+http://192.168.1.1/goform/getUsbIP?rand=0.13371337 
+http://192.168.1.1/goform/getMACFilterInfo
+</code></pre><p>After viewing various responses and requests within Burp Suite, various endpoints were accessed while not authenticated to the web application, which resulted in sensitive information being disclosed, such as the device username, password and SMS messages, as demonstrated below.</p>
 <p><img src="images/Password.png" alt=""></p>
 <p><img src="images/SMSContent.png" alt=""></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p><em>27th July, 2017 at 21:32 GMT. Email sent with technical vulnerability information and PoC.</em> <em>27th July, 2017 at 22:00 GMT. Response from EE devices manager, confirming receipt of PoC.</em> <em>31th July, 2017 at  18:47 GMT. Update from vendor, patches being developed for reported issues.</em> <em>1st August, 2017 at 10:43 GMT. Reply sent to vendor.</em> <em>10th August, 2017 at 10:32 GMT. Update from vendor, patches still being developed.</em> <em>18th August, 2017 at 12:11 GMT. Email sent to vendor asking for update/ETA.</em> <em>18th August, 2017 at 12:15 GMT. Response from vendor, updates to be released on Monday.</em> <em>18th August, 2017 at 12:30 GMT. Reply sent to vendor with device IMEI for online update process.</em> <em>22nd August, 2017 at 15:54 GMT. Response from vendor, beta firmware released to verify  changes.</em> <em>23rd August, 2017 at 21:29 GMT. Reply sent to vendor, vulnerabilities successfully patched.</em> <em>24th August, 2017 at 09:32 GMT. Response from vendor, patch publicly released to customers.</em> <em>24th August, 2017 at 12:00 GMT. Full disclosure via Blog.</em></p>
-]]></content>
+<pre tabindex="0"><code>27th July, 2017 at 21:32 GMT. Email sent with technical vulnerability information and PoC.
+27th July, 2017 at 22:00 GMT. Response from EE devices manager, confirming receipt of PoC.
+31th July, 2017 at  18:47 GMT. Update from vendor, patches being developed for reported issues.
+1st August, 2017 at 10:43 GMT. Reply sent to vendor.
+10th August, 2017 at 10:32 GMT. Update from vendor, patches still being developed.
+18th August, 2017 at 12:11 GMT. Email sent to vendor asking for update/ETA.
+18th August, 2017 at 12:15 GMT. Response from vendor, updates to be released on Monday.
+18th August, 2017 at 12:30 GMT. Reply sent to vendor with device IMEI for online update process.
+22nd August, 2017 at 15:54 GMT. Response from vendor, beta firmware released to verify  changes.
+23rd August, 2017 at 21:29 GMT. Reply sent to vendor, vulnerabilities successfully patched.
+24th August, 2017 at 09:32 GMT. Response from vendor, patch publicly released to customers.
+24th August, 2017 at 12:00 GMT. Full disclosure via Blog.
+</code></pre>]]></content>
         </item>
         
         <item>
@@ -178,10 +249,19 @@ Other attacks are also possible by misleading and/or tricking users into executi
 <p>Finally, despite not being able to disclose the organisation name or application I would like to say thank you to them for handling this issue in a prompt and respective manner, which resulted in a good result for both parties involved, as now the application is secure.</p>
 <p><img src="images/email.png" alt=""></p>
 <h2 id="references"><strong>References:</strong></h2>
-<p>[1] <a href="https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage">https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage</a> [2] <a href="https://docs.microsoft.com/en-us/azure/storage/storage-configure-connection-string">https://docs.microsoft.com/en-us/azure/storage/storage-configure-connection-string</a> [3] <a href="http://www.javadecompilers.com/apk">http://www.javadecompilers.com/apk</a></p>
+<p>[1] <a href="https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage">https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage</a>
+[2] <a href="https://docs.microsoft.com/en-us/azure/storage/storage-configure-connection-string">https://docs.microsoft.com/en-us/azure/storage/storage-configure-connection-string</a>
+[3] <a href="http://www.javadecompilers.com/apk">http://www.javadecompilers.com/apk</a></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p><em>17th</em> <em>February, 2017 at 01:32 GMT. Email sent requesting security contact information.</em> <em>17th February, 2017 at 15:36 GMT. Response from vendor/org requesting full details.</em> <em>17th February, 2017 at 16:00 GMT. Full technical details sent to company director.</em> <em>17th February, 2017 at 16:13 GMT.  Response from vendor/org stating they will look into it/resolve urgently.</em> <em>16th July, 2017 at 22:50 GMT.  Email sent asking for update on vulnerability resolution.</em> <em>22nd July, 2017 at 13:21 GMT.  No response, further email sent asking for permission if I can disclose with organisation name/details via Blog.</em> <em>22nd July, 2017 at 23:35 GMT.  Response received from company director. Company does not wish app or name to be included in disclosure.</em> <em>23rd July, 2017 at 10:00 GMT.  Full Disclosure via Blog.</em></p>
-]]></content>
+<pre tabindex="0"><code>17th February, 2017 at 01:32 GMT. Email sent requesting security contact information.
+17th February, 2017 at 15:36 GMT. Response from vendor/org requesting full details.
+17th February, 2017 at 16:00 GMT. Full technical details sent to company director.
+17th February, 2017 at 16:13 GMT. Response from vendor/org stating they will look into it/resolve urgently.
+16th July, 2017 at 22:50 GMT. Email sent asking for update on vulnerability resolution.
+22nd July, 2017 at 13:21 GMT. No response, further email sent asking for permission if I can disclose with organisation name/details via Blog.
+22nd July, 2017 at 23:35 GMT. Response received from company director. Company does not wish app or name to be included in disclosure.
+23rd July, 2017 at 10:00 GMT. Full Disclosure via Blog.
+</code></pre>]]></content>
         </item>
         
         <item>
@@ -220,12 +300,12 @@ Other attacks are also possible by misleading and/or tricking users into executi
 <p>As demonstrated this can be deadly, as now an attacker can have access to the users account by stealing the user cookie and then the private medical information located within it. Specifically, the attacker would steal the user cookie on every login, using a cookie theft payload.</p>
 <p><img src="images/GoodSAMCSRF5.png" alt=""></p>
 <p><strong>Account Profile - Stored Cross Site Scripting (XSS):</strong></p>
-<p>The first step was to change the profile field &ldquo;Emergency Contact Full Name&rdquo; to <em>&quot;&quot;&gt;<!-- raw HTML omitted -->alert(document.domain)<!-- raw HTML omitted -->&quot;</em> and then press the &ldquo;Update Profile&rdquo; page which results in XSS execution.</p>
+<p>The first step was to change the profile field &ldquo;Emergency Contact Full Name&rdquo; to <code>&quot;&quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;&quot;</code> and then press the &ldquo;Update Profile&rdquo; page which results in XSS execution.</p>
 <h2 id="imagesgoodsamxss_1png"><img src="images/GoodSamXSS_1.png" alt=""></h2>
 <p>As demonstrated below, the JavaScript XSS payload is executed, confirming it is within the web application context (<a href="http://www.goodsamapp.org">www.goodsamapp.org</a>).</p>
 <p><img src="images/GoodSamXSS_2.png" alt=""></p>
-<p>Now you may be wondering, how does the XSS attack work exactly? What am I looking for to find such vulnerabilities. Well specifically in this case, the account profile page loads the data within value fields and the value is set within two speech marks (E.g <em>&ldquo;VALUE&rdquo;).</em></p>
-<p>Now due to how HTML works, if you put another &quot; within the payload you will then escape out of the value tag and can inject your own HTML tags within it such as <em>onclick=&quot;<!-- raw HTML omitted -->alert(1)<!-- raw HTML omitted -->&quot;</em> or by fully escaping the input tag by doing <em>&quot;&gt;<!-- raw HTML omitted -->alert(1)<!-- raw HTML omitted --></em> which is what I did in this case.</p>
+<p>Now you may be wondering, how does the XSS attack work exactly? What am I looking for to find such vulnerabilities. Well specifically in this case, the account profile page loads the data within value fields and the value is set within two speech marks (E.g &ldquo;VALUE&rdquo;).</p>
+<p>Now due to how HTML works, if you put another &quot; within the payload you will then escape out of the value tag and can inject your own HTML tags within it such as <code>onclick=&quot;&lt;script&gt;alert(1)&lt;/script&gt;&quot;</code> or by fully escaping the input tag by doing <code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code> which is what I did in this case.</p>
 <p><img src="images/Screenshot-at-2017-07-17-230539.png" alt=""></p>
 <p><strong>Chanining CSRF/XSS Demonstration:</strong></p>
 <!-- raw HTML omitted -->
@@ -245,10 +325,24 @@ Other attacks are also possible by misleading and/or tricking users into executi
 <p>My feedback and suggestions to the GoodSAM team, would be to ensure they honour their commitment to taking security seriously [7], even though this vulnerability is not a critical RCE (Remote Code Execution) or severely critical vulnerability, it is still a vulnerability that can attack users via phishing, or other means to achieve full account takeover and compromise of highly sensitive and private medical information, that once stolen is in the wild potentially. Additionally, by taking a defence in depth approach to security, you mitigate the possibility of medium risk vulnerabilities being chained to achieve further levels of access, as well as committing to your statement of &ldquo;data security&rdquo;.</p>
 <p>Additionally, resolving XSS and CSRF vulnerabilities do not put undue burden on the organisation and can be easily remediated by implementing input sanitization, encoding and filtering along with ensuring POST requests have anti-CSRF or verification tokens, to ensure they are only sent within the site context and not by third party websites [3][5][6].</p>
 <h2 id="references"><strong>References:</strong></h2>
-<p><em>[1] <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a></em> <em>[2] <a href="https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)">https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)</a></em> <em>[3] <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet</a></em> <em>[4] <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)</a></em> <em>[5] <a href="https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet</a></em> <em>[6] <a href="https://www.owasp.org/index.php/Defense_in_depth">https://www.owasp.org/index.php/Defense_in_depth</a></em> [7] <a href="https://www.goodsamapp.org/dataprotection">https://www.goodsamapp.org/dataprotection</a></p>
+<p>[1] <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a>
+[2] <a href="https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)">https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)</a>
+[3] <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet</a>
+[4] <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)</a>
+[5] <a href="https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/CSRF_Prevention_Cheat_Sheet</a>
+[6] <a href="https://www.owasp.org/index.php/Defense_in_depth">https://www.owasp.org/index.php/Defense_in_depth</a>
+[7] <a href="https://www.goodsamapp.org/dataprotection">https://www.goodsamapp.org/dataprotection</a></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p><em>30th June, 2017 at 23:08 GMT. Email sent requesting security contact information.</em> <em>14th July, 2017 at 19:51 GMT. No response from first email, vulnerability POC/information sent to three listed email addresses.</em> <em>14th July, 2017 at 20:07 GMT. Reply received (Technical Director), dismissing vulnerability as non-issue.</em> <em>14th July, 2017 at 20:26 GMT. Further technical information sent, including video PoC.</em> <em>15th July, 2017 at 14:58 GMT. Reply received (Technical Director), further dismissing vulnerability.</em> <em>15th July, 2017 at 15:24 GMT. Further explanation/clarification sent, explaining risks.</em> <em>17th July, 2017 at 14:12 GMT. Email sent requesting update/checking email was received and permission to disclose, if no intention of resolving issue.</em> <em>17th July, 2017 at 15:55 GMT. Reply received (Technical Director). Advises I can disclose or notify whoever and that they have no interest talking or speaking to me, unless I can breach their servers and extract data.</em> <em>17th July, 2017 at 19:30 GMT. Full Disclosure via Blog.</em></p>
-]]></content>
+<pre tabindex="0"><code>30th June, 2017 at 23:08 GMT. Email sent requesting security contact information.
+14th July, 2017 at 19:51 GMT. No response from first email, vulnerability POC/information sent to three listed email addresses.
+14th July, 2017 at 20:07 GMT. Reply received (Technical Director), dismissing vulnerability as non-issue.
+14th July, 2017 at 20:26 GMT. Further technical information sent, including video PoC.
+15th July, 2017 at 14:58 GMT. Reply received (Technical Director), further dismissing vulnerability.
+15th July, 2017 at 15:24 GMT. Further explanation/clarification sent, explaining risks.
+17th July, 2017 at 14:12 GMT. Email sent requesting update/checking email was received and permission to disclose, if no intention of resolving issue.
+17th July, 2017 at 15:55 GMT. Reply received (Technical Director). Advises I can disclose or notify whoever and that they have no interest talking or speaking to me, unless I can breach their servers and extract data.
+17th July, 2017 at 19:30 GMT. Full Disclosure via Blog.
+</code></pre>]]></content>
         </item>
         
         <item>
@@ -258,20 +352,28 @@ Other attacks are also possible by misleading and/or tricking users into executi
             
             <guid>https://blog.jameshemmings.co.uk/2017/07/15/major-league-baseball-reflected-xss/</guid>
             <description>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
-In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!</description>
+In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;quot;--!</description>
             <content type="html"><![CDATA[<p>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.</p>
-<p>In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &ldquo;&ndash;!&gt;&lt;Svg/Onload=confirm(' OPENBUGBOUNTY')&gt;&rdquo; being used to exploit the reflected XSS vulnerability. (See below).</p>
+<p>In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of <code>&quot;--!&gt;&lt;Svg/Onload=confirm(' OPENBUGBOUNTY')&gt;&quot;</code> being used to exploit the reflected XSS vulnerability. (See below).</p>
 <p><img src="images/MLB_POC.png" alt=""></p>
 <h2 id="vulnerability-information"><strong>Vulnerability Information</strong></h2>
 <p>The &ldquo;FORM_CODE&rdquo; parameter is vulnerable within the link rel and meta property tags, as shown below and within the above screenshots. (See <a href="https://pastebin.com/KztVKeFc">https://pastebin.com/KztVKeFc</a> for URL).</p>
 <p><img src="images/MLB_Vuln.png" alt=""></p>
 <h2 id="feedbacksuggestions"><strong>Feedback/Suggestions:</strong></h2>
-<p>MLB should implement input filtering and encoding on all user supplied input to ensure raw XSS/HTML data is not executed within the user context. [1] [2].</p>
+<p>MLB should implement input filtering and encoding on all user supplied input to ensure raw XSS/HTML data is not executed within the user context [1][2].</p>
 <h2 id="further-information"><strong>Further Information:</strong></h2>
-<p>[1] https://www.owasp.org/index.php/Cross-site_Scripting_(XSS) [2] https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet [3] <a href="https://www.openbugbounty.org/incidents/229173/">https://www.openbugbounty.org/incidents/229173/</a></p>
+<p>[1] https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)
+[2] https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
+[3] <a href="https://www.openbugbounty.org/incidents/229173/">https://www.openbugbounty.org/incidents/229173/</a></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p>29 April, 2017 at 12:22 GMT Vulnerability reported via Open Bug Bounty 1 May, 2017 at 06:31 GMT Vulnerability verified and confirmed 1 May, 2017 at 06:31 GMT Notification sent to generic security emails / Tweets sent to MLB. 1 May, 2017 at 06:31 GMT Notification sent to emails provided by researcher 1 May, 2017 at 10:17 GMT Notification sent to subscribers (without technical details) 29 May, 2017 at 07:15 GMT Vulnerability details publicly disclosed (Open Bug Bounty) 15 July, 2017 at 09:50 GMT Vulnerability details publicly disclosed (Blog)</p>
-]]></content>
+<pre tabindex="0"><code>29 April, 2017 at 12:22 GMT Vulnerability reported via Open Bug Bounty 
+1 May, 2017 at 06:31 GMT Vulnerability verified and confirmed 
+1 May, 2017 at 06:31 GMT Notification sent to generic security emails / Tweets sent to MLB. 
+1 May, 2017 at 06:31 GMT Notification sent to emails provided by researcher 
+1 May, 2017 at 10:17 GMT Notification sent to subscribers (without technical details) 
+29 May, 2017 at 07:15 GMT Vulnerability details publicly disclosed (Open Bug Bounty) 
+15 July, 2017 at 09:50 GMT Vulnerability details publicly disclosed (Blog)
+</code></pre>]]></content>
         </item>
         
         <item>
@@ -282,11 +384,20 @@ In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rd
             <guid>https://blog.jameshemmings.co.uk/2017/02/11/kioptrix-1.1-level-2-writeup/</guid>
             <description>I&amp;rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
-nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql</description>
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql After viewing the web page, a administrative login panel was found.</description>
             <content type="html"><![CDATA[<p>I&rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.</p>
 <p>The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).</p>
-<p>nmap -sS -T5 192.168.74.134 <code>Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT     STATE SERVICE 22/tcp   open  ssh 80/tcp   open  http 111/tcp  open  rpcbind 443/tcp  open  https 631/tcp  open  ipp 3306/tcp open  mysql</code></p>
-<p>After viewing the web page, a administrative login panel was found. The first step was to attempt to perform SQL injection to see if the web page is vulnerable. The username of &ldquo;admin&rdquo; and &ldquo;wrongpassword' OR &lsquo;a&rsquo;=&lsquo;a&rdquo; was utilised to bypass the login page.</p>
+<pre tabindex="0"><code>nmap -sS -T5 192.168.74.134 
+Nmap scan report for 192.168.74.134 
+Host is up (0.00018s latency). Not shown: 994 closed ports 
+PORT     STATE SERVICE 
+22/tcp   open  ssh 
+80/tcp   open  http 
+111/tcp  open  rpcbind 
+443/tcp  open  https 
+631/tcp  open  ipp 
+3306/tcp open  mysql
+</code></pre><p>After viewing the web page, a administrative login panel was found. The first step was to attempt to perform SQL injection to see if the web page is vulnerable. The username of &ldquo;admin&rdquo; and &ldquo;wrongpassword' OR &lsquo;a&rsquo;=&lsquo;a&rdquo; was utilised to bypass the login page.</p>
 <p><img src="images/Selection_103.png" alt=""></p>
 <p>Voila! We have access. After gaining access, I attempted to include another command along with the IP address to test for the lack of input filtering. If successful, this should display the passwd file.</p>
 <p><img src="images/Selection_105.png" alt=""></p>

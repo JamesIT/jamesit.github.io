@@ -66,7 +66,7 @@ To be confirmed.</description>
       
       <guid>https://blog.jameshemmings.co.uk/2017/07/15/major-league-baseball-reflected-xss/</guid>
       <description>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
-In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!</description>
+In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;quot;--!</description>
     </item>
     
     <item>
@@ -77,7 +77,7 @@ In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rd
       <guid>https://blog.jameshemmings.co.uk/2017/02/11/kioptrix-1.1-level-2-writeup/</guid>
       <description>I&amp;rsquo;ve decided to start a series of blog posts with write ups from Vuln Hub to keep my skills up to date, and learn more offensive techniques.
 The first step was to use nmap which revealed the presence of various open ports and in particular port 80 (HTTP).
-nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql</description>
+nmap -sS -T5 192.168.74.134 Nmap scan report for 192.168.74.134 Host is up (0.00018s latency). Not shown: 994 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 111/tcp open rpcbind 443/tcp open https 631/tcp open ipp 3306/tcp open mysql After viewing the web page, a administrative login panel was found.</description>
     </item>
     
     <item>

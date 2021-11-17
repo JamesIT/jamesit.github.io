@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="James Hemmings ">
 <meta name="description" content="Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
-In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;ldquo;&amp;ndash;!" />
+In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rdquo; parameter with the payload of &amp;quot;--!" />
 <meta name="keywords" content="red teaming,redteam,red team,osint,cyber security,penetration testing,security research,vulnerability research,offensive security,@MrJamesHemmings,James Hemmings, mlb, reflected-xss, responsible-disclosure, vulnerability, web, xss" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="" />
@@ -43,23 +43,23 @@ In particular, the website was vulnerable within the &amp;ldquo;FORM_CODE&amp;rd
 
 <meta itemprop="name" content="Major League Baseball Reflected XSS">
 <meta itemprop="description" content="Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
-In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &ldquo;&ndash;!"><meta itemprop="datePublished" content="2017-07-15T00:00:00+00:00" />
+In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &quot;--!"><meta itemprop="datePublished" content="2017-07-15T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2017-07-15T00:00:00+00:00" />
-<meta itemprop="wordCount" content="237"><meta itemprop="image" content="https://blog.jameshemmings.co.uk"/>
+<meta itemprop="wordCount" content="236"><meta itemprop="image" content="https://blog.jameshemmings.co.uk"/>
 <meta itemprop="keywords" content="mlb,reflected-xss,responsible-disclosure,vulnerability,web,xss," />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.jameshemmings.co.uk"/>
 
 <meta name="twitter:title" content="Major League Baseball Reflected XSS"/>
 <meta name="twitter:description" content="Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
-In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &ldquo;&ndash;!"/>
+In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &quot;--!"/>
 
 
 
 
     <meta property="og:title" content="Major League Baseball Reflected XSS" />
 <meta property="og:description" content="Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.
-In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &ldquo;&ndash;!" />
+In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &quot;--!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.jameshemmings.co.uk/2017/07/15/major-league-baseball-reflected-xss/" /><meta property="og:image" content="https://blog.jameshemmings.co.uk"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2017-07-15T00:00:00+00:00" />
@@ -171,18 +171,26 @@ if (!doNotTrack) {
 
       <div class="post-content">
         <p>Recently I have been looking for vulnerabilities such as XSS/CSRF within online applications and came across an XSS vulnerability within the Major League Basketball (MLB) website, which in question was vulnerable to reflected XSS. I did attempt responsible disclosure through Open Bug Bounty [3] and attempted contact via Twitter also, with no response returned and hence full disclosure.</p>
-<p>In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of &ldquo;&ndash;!&gt;&lt;Svg/Onload=confirm(' OPENBUGBOUNTY')&gt;&rdquo; being used to exploit the reflected XSS vulnerability. (See below).</p>
+<p>In particular, the website was vulnerable within the &ldquo;FORM_CODE&rdquo; parameter with the payload of <code>&quot;--!&gt;&lt;Svg/Onload=confirm(' OPENBUGBOUNTY')&gt;&quot;</code> being used to exploit the reflected XSS vulnerability. (See below).</p>
 <p><img src="images/MLB_POC.png" alt=""></p>
 <h2 id="vulnerability-information"><strong>Vulnerability Information</strong></h2>
 <p>The &ldquo;FORM_CODE&rdquo; parameter is vulnerable within the link rel and meta property tags, as shown below and within the above screenshots. (See <a href="https://pastebin.com/KztVKeFc">https://pastebin.com/KztVKeFc</a> for URL).</p>
 <p><img src="images/MLB_Vuln.png" alt=""></p>
 <h2 id="feedbacksuggestions"><strong>Feedback/Suggestions:</strong></h2>
-<p>MLB should implement input filtering and encoding on all user supplied input to ensure raw XSS/HTML data is not executed within the user context. [1] [2].</p>
+<p>MLB should implement input filtering and encoding on all user supplied input to ensure raw XSS/HTML data is not executed within the user context [1][2].</p>
 <h2 id="further-information"><strong>Further Information:</strong></h2>
-<p>[1] https://www.owasp.org/index.php/Cross-site_Scripting_(XSS) [2] https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet [3] <a href="https://www.openbugbounty.org/incidents/229173/">https://www.openbugbounty.org/incidents/229173/</a></p>
+<p>[1] https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)
+[2] https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
+[3] <a href="https://www.openbugbounty.org/incidents/229173/">https://www.openbugbounty.org/incidents/229173/</a></p>
 <h2 id="disclosure-timeline"><strong>Disclosure Timeline:</strong></h2>
-<p>29 April, 2017 at 12:22 GMT Vulnerability reported via Open Bug Bounty 1 May, 2017 at 06:31 GMT Vulnerability verified and confirmed 1 May, 2017 at 06:31 GMT Notification sent to generic security emails / Tweets sent to MLB. 1 May, 2017 at 06:31 GMT Notification sent to emails provided by researcher 1 May, 2017 at 10:17 GMT Notification sent to subscribers (without technical details) 29 May, 2017 at 07:15 GMT Vulnerability details publicly disclosed (Open Bug Bounty) 15 July, 2017 at 09:50 GMT Vulnerability details publicly disclosed (Blog)</p>
-
+<pre tabindex="0"><code>29 April, 2017 at 12:22 GMT Vulnerability reported via Open Bug Bounty 
+1 May, 2017 at 06:31 GMT Vulnerability verified and confirmed 
+1 May, 2017 at 06:31 GMT Notification sent to generic security emails / Tweets sent to MLB. 
+1 May, 2017 at 06:31 GMT Notification sent to emails provided by researcher 
+1 May, 2017 at 10:17 GMT Notification sent to subscribers (without technical details) 
+29 May, 2017 at 07:15 GMT Vulnerability details publicly disclosed (Open Bug Bounty) 
+15 July, 2017 at 09:50 GMT Vulnerability details publicly disclosed (Blog)
+</code></pre>
       </div>
     </article>
 
@@ -220,7 +228,7 @@ if (!doNotTrack) {
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        237 Words
+        236 Words
       </p>
 
       <p>
